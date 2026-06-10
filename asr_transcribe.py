@@ -1,33 +1,39 @@
 from __future__ import annotations
 
-from typing import Any
+import argparse
 
-from datasets import Audio, DatasetDict, load_dataset
-
-
-def load_twi_dataset(
-    hf_dataset_id: str = "FarmerlineML/Twi_TTS2026_dataset",
-    target_sampling_rate: int | None = 22050,
-    **load_kwargs: Any,
-) -> DatasetDict:
-    """Load the Farmerline Twi TTS dataset from Hugging Face.
-
-    Authentication is handled by the Hugging Face CLI or environment variables.
-    Run `hf auth login` before using this on a gated/private dataset.
-    """
-    ds = load_dataset(hf_dataset_id, **load_kwargs)
-
-    if target_sampling_rate is not None:
-        for split in ds.keys():
-            if "audio" in ds[split].column_names:
-                ds[split] = ds[split].cast_column(
-                    "audio", Audio(sampling_rate=target_sampling_rate)
-                )
-    return ds
+from src.eval.asr_transcribe import transcribe_audio_manifest
+from src.eval.compute_wer import compute_roundtrip_wer, summarise_wer
+from src.utils.paths import load_yaml
 
 
-def split_to_dataframe(ds: DatasetDict, split: str):
-    """Convert a split to pandas, avoiding audio decoding where possible."""
-    return ds[split].remove_columns(
-        [c for c in ["audio"] if c in ds[split].column_names]
-    ).to_pandas()
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run ASR on baseline TTS audio and compute WER/CER.")
+    parser.add_argument("--config", default="configs/week1_eval.yaml")
+    parser.add_argument("--manifest-with-audio", default="data/manifests/dev_set_with_baseline_audio.csv")
+    args = parser.parse_args()
+
+    config = load_yaml(args.config)
+    asr_cfg = config["asr"]
+
+    transcripts = transcribe_audio_manifest(
+        manifest_with_audio_csv=args.manifest_with_audio,
+        output_csv=asr_cfg["output_csv"],
+        asr_model_id=asr_cfg["hf_model_id"],
+        language=asr_cfg.get("language"),
+        task=asr_cfg.get("task", "transcribe"),
+    )
+
+    wer_df = compute_roundtrip_wer(
+        transcripts_csv=asr_cfg["output_csv"],
+        output_csv=config["wer"]["output_csv"],
+        normalisation_config_path=config["wer"].get("text_normalisation_config"),
+    )
+
+    print("WER summary:")
+    for k, v in summarise_wer(wer_df).items():
+        print(f"  {k}: {v}")
+
+
+if __name__ == "__main__":
+    main()

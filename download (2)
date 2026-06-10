@@ -1,0 +1,51 @@
+project:
+  name: twi-tone-conditioned-vits
+  seed: 42
+
+dataset:
+  hf_dataset_id: FarmerlineML/Twi_TTS2026_dataset
+  train_split: train
+  eval_split: test
+  text_column: text
+  audio_column: audio
+  duration_column: duration
+  target_sampling_rate: 22050
+
+baseline_tts:
+  # Baseline from the project brief. Adjust only if the model repo name changes.
+  hf_model_id: FarmerlineML/twi-tts-2026
+  output_dir: outputs/baseline_tts
+  max_samples: null
+  synthesise_mos_subset_only: false
+
+asr:
+  # Whisper is a pragmatic first ASR baseline. Change if Farmerline provides a Twi ASR model.
+  hf_model_id: openai/whisper-small
+  language: twi
+  task: transcribe
+  output_csv: results/asr_transcripts.csv
+
+dev_set:
+  output_csv: data/manifests/dev_set.csv
+  split: test
+  n_wer_samples: 500
+  n_mos_samples: 50
+  n_tone_validation_samples: 100
+  min_duration_seconds: 2.0
+  max_duration_seconds: 10.0
+  duration_bins: 5
+
+wer:
+  output_csv: results/baseline_wer.csv
+  text_normalisation_config: configs/text_normalisation.yaml
+
+mos:
+  template_csv: results/baseline_mos_template.csv
+
+tone_annotation:
+  output_csv: data/manifests/tone_annotated_dev.csv
+  validation_sheet_csv: data/manifests/native_validation_sheet.csv
+  unknown_label: UNK
+  high_label: H
+  low_label: L
+  falling_label: F

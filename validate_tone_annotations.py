@@ -1,40 +1,33 @@
 from __future__ import annotations
 
-import pandas as pd
-from jiwer import cer, wer
+from typing import Any
 
-from src.data.text_normalise import load_normalisation_config, normalise_text
-from src.utils.paths import ensure_parent, resolve_path
+from datasets import Audio, DatasetDict, load_dataset
 
 
-def compute_roundtrip_wer(
-    transcripts_csv: str,
-    output_csv: str,
-    normalisation_config_path: str | None = None,
-) -> pd.DataFrame:
-    df = pd.read_csv(transcripts_csv)
-    if "text" not in df.columns:
-        raise ValueError("Expected reference column `text` in transcripts CSV")
-    if "asr_transcript" not in df.columns:
-        raise ValueError("Expected hypothesis column `asr_transcript` in transcripts CSV")
+def load_twi_dataset(
+    hf_dataset_id: str = "FarmerlineML/Twi_TTS2026_dataset",
+    target_sampling_rate: int | None = 22050,
+    **load_kwargs: Any,
+) -> DatasetDict:
+    """Load the Farmerline Twi TTS dataset from Hugging Face.
 
-    cfg = load_normalisation_config(resolve_path(normalisation_config_path)) if normalisation_config_path else None
-    df["reference_norm"] = df["text"].fillna("").map(lambda x: normalise_text(x, cfg))
-    df["asr_norm"] = df["asr_transcript"].fillna("").map(lambda x: normalise_text(x, cfg))
+    Authentication is handled by the Hugging Face CLI or environment variables.
+    Run `hf auth login` before using this on a gated/private dataset.
+    """
+    ds = load_dataset(hf_dataset_id, **load_kwargs)
 
-    df["wer"] = [wer(r, h) for r, h in zip(df["reference_norm"], df["asr_norm"])]
-    df["cer"] = [cer(r, h) for r, h in zip(df["reference_norm"], df["asr_norm"])]
-
-    out_path = ensure_parent(output_csv)
-    df.to_csv(out_path, index=False)
-    return df
+    if target_sampling_rate is not None:
+        for split in ds.keys():
+            if "audio" in ds[split].column_names:
+                ds[split] = ds[split].cast_column(
+                    "audio", Audio(sampling_rate=target_sampling_rate)
+                )
+    return ds
 
 
-def summarise_wer(df: pd.DataFrame) -> dict:
-    return {
-        "n_samples": int(len(df)),
-        "mean_wer": float(df["wer"].mean()),
-        "median_wer": float(df["wer"].median()),
-        "mean_cer": float(df["cer"].mean()),
-        "median_cer": float(df["cer"].median()),
-    }
+def split_to_dataframe(ds: DatasetDict, split: str):
+    """Convert a split to pandas, avoiding audio decoding where possible."""
+    return ds[split].remove_columns(
+        [c for c in ["audio"] if c in ds[split].column_names]
+    ).to_pandas()

@@ -1,70 +1,44 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
-from typing import Any
 
-import numpy as np
-import pandas as pd
-import soundfile as sf
-import torch
-from tqdm import tqdm
-from transformers import AutoTokenizer, VitsModel
+import yaml
 
-from src.utils.paths import ensure_dir
+DEFAULT_PRESERVE = r"a-zA-Z0-9ɛƐɔƆáàâāéèêēíìîīóòôōúùûūńǹḿm̀ḿǹń'’ "
 
 
-class BaselineSynthesiser:
-    """Generic Transformers-style VITS synthesiser.
+def load_normalisation_config(path: str | Path | None = None) -> dict:
+    if path is None:
+        return {
+            "normalisation": {
+                "lowercase": True,
+                "strip_punctuation": True,
+                "collapse_whitespace": True,
+                "preserve_characters": DEFAULT_PRESERVE,
+            }
+        }
+    with Path(path).open("r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
 
-    If `FarmerlineML/twi-tts-2026` uses a custom class, adapt only this class.
-    The rest of the Week 1 evaluation pipeline should not need to change.
+
+def normalise_text(text: str, config: dict | None = None) -> str:
+    """Normalise Twi text for WER/CER comparison.
+
+    This keeps common Akan/Twi characters such as ɛ and ɔ while removing most
+    punctuation. Keep this conservative and document all changes in reports.
     """
+    cfg = (config or load_normalisation_config())["normalisation"]
+    s = str(text).strip()
 
-    def __init__(self, model_id: str, device: str | None = None):
-        self.model_id = model_id
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
-        self.model = VitsModel.from_pretrained(model_id, trust_remote_code=True).to(self.device)
-        self.model.eval()
+    if cfg.get("lowercase", True):
+        s = s.lower()
 
-    @property
-    def sampling_rate(self) -> int:
-        return int(getattr(self.model.config, "sampling_rate", 22050))
+    if cfg.get("strip_punctuation", True):
+        preserve = cfg.get("preserve_characters", DEFAULT_PRESERVE)
+        s = re.sub(fr"[^{preserve}]", " ", s)
 
-    @torch.inference_mode()
-    def synthesise_one(self, text: str) -> np.ndarray:
-        inputs = self.tokenizer(text, return_tensors="pt")
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
-        output = self.model(**inputs).waveform
-        wav = output.squeeze().detach().cpu().numpy()
-        return wav.astype(np.float32)
+    if cfg.get("collapse_whitespace", True):
+        s = re.sub(r"\s+", " ", s).strip()
 
-
-def synthesise_manifest(
-    manifest_csv: str,
-    model_id: str,
-    output_dir: str,
-    max_samples: int | None = None,
-    mos_subset_only: bool = False,
-) -> pd.DataFrame:
-    df = pd.read_csv(manifest_csv)
-    if mos_subset_only and "mos_subset" in df.columns:
-        df = df[df["mos_subset"].astype(bool)].copy()
-    if max_samples is not None:
-        df = df.head(int(max_samples)).copy()
-
-    out_dir = ensure_dir(output_dir)
-    synthesiser = BaselineSynthesiser(model_id)
-
-    rows: list[dict[str, Any]] = []
-    for _, row in tqdm(df.iterrows(), total=len(df), desc="Synthesising baseline TTS"):
-        utt_id = row["utt_id"]
-        text = str(row["text"])
-        wav = synthesiser.synthesise_one(text)
-        audio_path = out_dir / f"{utt_id}.wav"
-        sf.write(audio_path, wav, synthesiser.sampling_rate)
-        out = row.to_dict()
-        out["baseline_tts_audio_path"] = str(audio_path)
-        rows.append(out)
-
-    return pd.DataFrame(rows)
+    return s
