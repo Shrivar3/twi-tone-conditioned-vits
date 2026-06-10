@@ -106,12 +106,8 @@ def annotate_text_with_gemini(
             contents=prompt,
             config={
                 "temperature": temperature,
-                "response_format": {
-                    "text": {
-                        "mime_type": "application/json",
-                        "schema": schema,
-                    }
-                },
+                "response_mime_type": "application/json",
+                "response_schema": ToneAnnotation,
             },
         )
     except Exception as structured_error:
