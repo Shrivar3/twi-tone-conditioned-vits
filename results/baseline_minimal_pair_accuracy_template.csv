@@ -1,0 +1,2 @@
+rater_id,pair_id,heard_item,expected_item,is_correct,unsure,comments
+R001,pair_001,,,,,

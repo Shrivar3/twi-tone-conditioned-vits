@@ -1,0 +1,5 @@
+pair_id,item_id,text,target_word,gloss,tone_pattern,contrast_group,notes,native_checked
+pair_001,A,,,,H,,,
+pair_001,B,,,,L,,,
+pair_002,A,,,,H-L,,,
+pair_002,B,,,,L-H,,,

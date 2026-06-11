@@ -1,0 +1,8 @@
+metric,value
+n_ratings,
+n_raters,
+n_samples,
+mean_naturalness,
+std_naturalness,
+mean_intelligibility,
+std_intelligibility,

@@ -1,0 +1,4 @@
+rater_id,utt_id,naturalness_score,intelligibility_score,comments
+R001,dev_0000,,,
+R001,dev_0001,,,
+R001,dev_0002,,,
