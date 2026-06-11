@@ -195,11 +195,12 @@ def annotate_csv_with_gemini(
         field for field in extra_fieldnames if field not in base_fieldnames
     ]
 
-    write_header = not output_csv.exists() or not resume
+    write_header = (not output_csv.exists()) or (not resume)
+    mode = "a" if resume else "w"
 
     processed_now = 0
 
-    with output_csv.open("a", encoding="utf-8", newline="") as f:
+    with output_csv.open(mode, encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
 
         if write_header:
@@ -211,7 +212,7 @@ def annotate_csv_with_gemini(
             if resume and utt_id in done_ids:
                 continue
 
-            if limit is not None and (len(done_ids) + processed_now) >= limit:
+            if limit is not None and processed_now >= limit:
                 break
 
             text = row.get(text_column, "")
