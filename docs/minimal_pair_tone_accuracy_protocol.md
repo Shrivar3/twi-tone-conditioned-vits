@@ -43,7 +43,9 @@ For each generated audio sample, native speakers answer a forced-choice question
 
 Tone accuracy is:
 
+```text
 correct forced-choice responses / total non-unsure responses
+```
 
 Report:
 

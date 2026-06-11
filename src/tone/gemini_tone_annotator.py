@@ -82,9 +82,15 @@ def _make_prompt(text: str, tokens: list[str]) -> str:
     )
 
 
+def _is_quota_or_availability_error(exc: Exception) -> bool:
+    error_text = repr(exc)
+    markers = ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]
+    return any(marker in error_text for marker in markers)
+
+
 def annotate_text_with_gemini(
     text: str,
-    model: str = "gemini-2.5-flash",
+    model: str = "gemini-2.5-flash-lite",
     temperature: float = 0.1,
 ) -> ToneAnnotation:
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
@@ -95,10 +101,7 @@ def annotate_text_with_gemini(
 
     tokens = text.split()
     prompt = _make_prompt(text=text, tokens=tokens)
-
     client = genai.Client(api_key=api_key)
-
-    schema = ToneAnnotation.model_json_schema()
 
     try:
         response = client.models.generate_content(
@@ -111,8 +114,7 @@ def annotate_text_with_gemini(
             },
         )
     except Exception as structured_error:
-        error_text = repr(structured_error)
-        if any(marker in error_text for marker in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
+        if _is_quota_or_availability_error(structured_error):
             raise RuntimeError(
                 "Gemini is rate-limited or temporarily unavailable. "
                 "Stopping without writing a failed annotation row. "
@@ -145,7 +147,9 @@ def annotate_text_with_gemini(
 def _flatten_annotation(annotation: ToneAnnotation) -> dict[str, Any]:
     return {
         "gemini_tokens": " ".join(item.token for item in annotation.items),
-        "gemini_tone_sequence": " ".join(item.tone_sequence for item in annotation.items),
+        "gemini_tone_sequence": " ".join(
+            item.tone_sequence for item in annotation.items
+        ),
         "gemini_token_confidences": " ".join(
             f"{item.confidence:.3f}" for item in annotation.items
         ),
@@ -163,9 +167,9 @@ def annotate_csv_with_gemini(
     input_csv: str | Path,
     output_csv: str | Path,
     text_column: str = "text",
-    model: str = "gemini-2.5-flash",
+    model: str = "gemini-2.5-flash-lite",
     limit: int | None = None,
-    sleep_seconds: float = 1.0,
+    sleep_seconds: float = 2.0,
     resume: bool = True,
     temperature: float = 0.1,
 ) -> Path:
@@ -178,7 +182,7 @@ def annotate_csv_with_gemini(
         with output_csv.open("r", encoding="utf-8", newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                if row.get("utt_id"):
+                if row.get("utt_id") and row.get("gemini_status") == "ok":
                     done_ids.add(row["utt_id"])
 
     with input_csv.open("r", encoding="utf-8", newline="") as f:
@@ -205,7 +209,6 @@ def annotate_csv_with_gemini(
 
     write_header = (not output_csv.exists()) or (not resume)
     mode = "a" if resume else "w"
-
     processed_now = 0
 
     with output_csv.open(mode, encoding="utf-8", newline="") as f:
@@ -238,12 +241,10 @@ def annotate_csv_with_gemini(
                 out["gemini_status"] = "ok"
                 out["gemini_error"] = ""
             except Exception as exc:
-                error_text = repr(exc)
-                if any(marker in error_text for marker in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
+                if _is_quota_or_availability_error(exc):
                     print(
                         "Gemini is rate-limited or temporarily unavailable. "
-                        f"Stopping before writing {utt_id}. "
-                        f"Error: {error_text[:300]}"
+                        f"Stopping before writing {utt_id}. Error: {repr(exc)[:300]}"
                     )
                     break
 
@@ -259,10 +260,7 @@ def annotate_csv_with_gemini(
 
             writer.writerow(out)
             f.flush()
-
             processed_now += 1
-            if utt_id:
-                done_ids.add(utt_id)
 
             if sleep_seconds > 0:
                 time.sleep(sleep_seconds)

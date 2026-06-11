@@ -47,6 +47,11 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 hf auth login
+```
+
+## Step 1: inspect Farmerline baseline model files
+
+```bash
 python - <<'PY'
 from huggingface_hub import HfApi
 
@@ -55,55 +60,26 @@ files = api.list_repo_files("FarmerlineML/twi-tts-2026", repo_type="model")
 for f in files:
     print(f)
 PY
-PYTHONPATH=. python scripts/02_run_baseline_tts.py --config configs/week1_eval.yaml
-PYTHONPATH=. python scripts/03_run_asr_wer.py --config configs/week1_eval.yaml
-PYTHONPATH=. python scripts/07_summarise_wer.py \
-  --input results/baseline_wer.csv \
-  --output results/baseline_wer_summary.csv
+```
 
-## 7. Add a Week 1 status file
+## Step 2: generate baseline audio
 
 ```bash
-cat > results/week1_status.md <<'EOF'
-# Week 1 Status
+PYTHONPATH=. python scripts/02_run_baseline_tts.py --config configs/week1_eval.yaml
+```
 
-## Completed
+## Step 3: run ASR and WER
 
-- GitHub repository structure created.
-- Hugging Face access confirmed.
-- Codespaces-safe dev set created:
-  - `data/manifests/dev_set.csv`
-- Conservative tone annotation created:
-  - `data/manifests/tone_annotated_dev.csv`
-- Native validation sheet created:
-  - `data/manifests/native_validation_sheet.csv`
-- Gemini candidate tone annotation pipeline added.
-- MOS evaluation templates added.
-- Minimal-pair tone accuracy templates added.
-- WER summary templates added.
-- RunPod baseline evaluation plan added.
+```bash
+PYTHONPATH=. python scripts/03_run_asr_wer.py --config configs/week1_eval.yaml
+```
 
-## In Progress
+## Step 4: summarise WER
 
-- Gemini candidate tone annotations:
-  - limited by Gemini free-tier quota
-  - continue in small batches
-  - treat outputs as candidate labels, not ground truth
+```bash
+PYTHONPATH=. python scripts/07_summarise_wer.py   --input results/baseline_wer.csv   --output results/baseline_wer_summary.csv
+```
 
-## Not Yet Completed
+## Notes
 
-- Baseline Farmerline TTS audio generation
-- Round-trip ASR WER
-- Baseline MOS naturalness
-- Baseline MOS intelligibility
-- Minimal-pair tone accuracy test
-- Native speaker validation of tone labels
-
-## Current Measurable Outcomes
-
-| Metric | Baseline | Success threshold |
-|---|---:|---:|
-| Twi TTS MOS naturalness | Not yet measured | Above 3.8 / 5.0 |
-| Twi TTS MOS intelligibility | Not yet measured | Above 3.8 / 5.0 |
-| Round-trip ASR WER | Not yet measured | Lower after tone conditioning |
-| Tone accuracy on minimal pairs | Not yet measured | Above 80% |
+The baseline TTS loader may need adjustment depending on the exact structure of `FarmerlineML/twi-tts-2026`. Inspect the model files before debugging the synthesis script.

@@ -10,12 +10,12 @@ Use the fixed Week 1 dev set:
 
 - `data/manifests/dev_set.csv`
 - 50 utterances
-- Audio generated from the baseline checkpoint should be placed under:
-  - `outputs/baseline_tts/wavs/`
+- Audio generated from the baseline checkpoint should be placed under `outputs/baseline_tts/wavs/`.
 
 ## Raters
 
 Target:
+
 - Pilot: 3-5 native Twi speakers
 - Full evaluation: 20 native Twi speakers
 
@@ -45,9 +45,7 @@ How easy is it to understand?
 
 ## Raw Results Format
 
-Store raw ratings in:
-
-- `results/baseline_mos_raw.csv`
+Store raw ratings in `results/baseline_mos_raw.csv`.
 
 Required columns:
 
@@ -59,12 +57,11 @@ Required columns:
 
 ## Summary Output
 
-The summary script writes:
-
-- `results/baseline_mos_summary.csv`
+The summary script writes `results/baseline_mos_summary.csv`.
 
 Metrics:
 
+- number of ratings
 - number of raters
 - number of samples
 - mean naturalness MOS
