@@ -1,0 +1,8 @@
+metric,value
+n_total_token_rows,
+n_reviewed_token_rows,
+review_completion_rate,
+n_comparable_candidate_native_rows,
+n_candidate_native_agreements,
+n_candidate_native_disagreements,
+candidate_native_agreement_rate,
