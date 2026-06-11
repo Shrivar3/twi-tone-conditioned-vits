@@ -111,6 +111,14 @@ def annotate_text_with_gemini(
             },
         )
     except Exception as structured_error:
+        error_text = repr(structured_error)
+        if any(marker in error_text for marker in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
+            raise RuntimeError(
+                "Gemini is rate-limited or temporarily unavailable. "
+                "Stopping without writing a failed annotation row. "
+                f"Original error: {structured_error}"
+            ) from structured_error
+
         print(
             "Warning: structured-output call failed. "
             f"Retrying with plain JSON prompt. Error: {structured_error}"
@@ -230,6 +238,15 @@ def annotate_csv_with_gemini(
                 out["gemini_status"] = "ok"
                 out["gemini_error"] = ""
             except Exception as exc:
+                error_text = repr(exc)
+                if any(marker in error_text for marker in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
+                    print(
+                        "Gemini is rate-limited or temporarily unavailable. "
+                        f"Stopping before writing {utt_id}. "
+                        f"Error: {error_text[:300]}"
+                    )
+                    break
+
                 out["gemini_status"] = "error"
                 out["gemini_error"] = repr(exc)
                 out["gemini_tokens"] = ""
