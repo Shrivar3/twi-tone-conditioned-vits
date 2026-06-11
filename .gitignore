@@ -35,6 +35,10 @@ models/
 *.ckpt
 *.safetensors
 
+# Crash dumps
+core
+core.*
+
 # OS/editor
 .DS_Store
 .vscode/

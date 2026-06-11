@@ -26,19 +26,19 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        default="gemini-2.5-flash",
+        default="gemini-2.5-flash-lite",
         help="Gemini model name.",
     )
     parser.add_argument(
         "--limit",
         type=int,
         default=None,
-        help="Maximum total rows to annotate in the output file.",
+        help="Maximum number of new rows to annotate in this run.",
     )
     parser.add_argument(
         "--sleep",
         type=float,
-        default=1.0,
+        default=2.0,
         help="Seconds to sleep between API calls.",
     )
     parser.add_argument(
