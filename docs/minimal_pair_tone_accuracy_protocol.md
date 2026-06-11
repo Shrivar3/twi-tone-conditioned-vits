@@ -4,23 +4,25 @@
 
 This test measures whether the TTS system preserves lexical tone contrasts in Twi/Akan.
 
-## Why this is separate from MOS
-
 MOS measures perceived naturalness and intelligibility. Minimal-pair tone accuracy measures whether listeners hear the intended tone contrast.
 
-## Test Construction
+## Test construction
 
-Create a file:
+Create:
 
-- `data/minimal_pairs/minimal_pairs.csv`
+```text
+data/minimal_pairs/minimal_pairs.csv
+```
 
 Use the template:
 
-- `data/minimal_pairs/minimal_pairs_template.csv`
+```text
+data/minimal_pairs/minimal_pairs_template.csv
+```
 
 Each minimal pair should be checked by a native Twi/Akan speaker.
 
-## Required Columns
+## Required columns
 
 - `pair_id`: shared ID for the minimal pair
 - `item_id`: A or B
@@ -32,14 +34,14 @@ Each minimal pair should be checked by a native Twi/Akan speaker.
 - `notes`: explanation or uncertainty
 - `native_checked`: yes/no
 
-## Evaluation
+## Evaluation design
 
 For each generated audio sample, native speakers answer a forced-choice question:
 
-- Which word/meaning did you hear?
-- A
-- B
-- Unsure
+```text
+Which word/meaning did you hear?
+A / B / Unsure
+```
 
 Tone accuracy is:
 
@@ -49,7 +51,11 @@ correct forced-choice responses / total non-unsure responses
 
 Report:
 
-- total judgments
-- number correct
-- number unsure
-- tone accuracy percentage
+- total judgments;
+- number correct;
+- number unsure;
+- tone accuracy percentage.
+
+## Notes
+
+The minimal-pair set should not rely only on Gemini. It should be checked by native speakers before being used as an evaluation target.

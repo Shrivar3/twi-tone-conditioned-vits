@@ -2,23 +2,31 @@
 
 ## Purpose
 
-This protocol validates candidate Twi/Akan tone annotations for the Week 1 tone-annotated development set. The validation set should be reviewed by native Twi/Akan speakers before the labels are treated as reference data.
+This protocol validates candidate Twi/Akan tone annotations for the Week 1 tone-annotated development set.
 
-## Files
+Candidate tone labels from Gemini or heuristic rules are not ground truth. They are suggestions to speed up review. Native-speaker labels should be treated as the reference labels for evaluation and later model conditioning.
 
-Input files:
+## Input files
 
-- `data/manifests/dev_set.csv`
-- `data/manifests/gemini_tone_annotated_dev.csv` if available
-- `data/manifests/tone_annotated_dev.csv` if available
+```text
+data/manifests/dev_set.csv
+data/manifests/tone_annotated_dev.csv
+data/manifests/gemini_tone_annotated_dev.csv
+```
 
-Generated reviewer file:
+The Gemini file is optional. If unavailable, the reviewer sheet can still be created from the dev set and conservative annotation file.
 
-- `data/manifests/native_validation_token_sheet.csv`
+## Generated reviewer file
 
-Summary output after review:
+```text
+data/manifests/native_validation_token_sheet.csv
+```
 
-- `results/native_validation_summary.csv`
+## Summary output after review
+
+```text
+results/native_validation_summary.csv
+```
 
 ## Tone labels
 
@@ -52,6 +60,6 @@ For each row in `native_validation_token_sheet.csv`:
 
 ## Important notes
 
-Candidate labels from Gemini or heuristic rules are not ground truth. They are only suggestions to speed up review. Native-speaker labels are the reference labels for evaluation and later model conditioning.
-
 If a reviewer is uncertain, `UNK` is acceptable. It is better to mark uncertainty honestly than to create overconfident tone labels.
+
+When multiple reviewers disagree, the disagreement should be recorded rather than hidden. Those rows can be escalated for adjudication by a stronger native-speaker reviewer or linguistic expert.

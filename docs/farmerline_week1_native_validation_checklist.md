@@ -2,31 +2,49 @@
 
 ## Goal
 
-Prepare a validated Twi/Akan tone reference set for the Week 1 dev set.
+Validate the pilot tone annotation sheet with native Twi/Akan speakers before treating any tone labels as reference data.
 
-## Checklist
+## Files to share with reviewers
 
-### Repository/data preparation
+```text
+data/manifests/native_validation_token_sheet.csv
+docs/native_validation_protocol.md
+```
 
-- [ ] `data/manifests/dev_set.csv` exists.
-- [ ] `data/manifests/tone_annotated_dev.csv` exists.
-- [ ] `data/manifests/gemini_tone_annotated_dev.csv` exists if Gemini candidate labels have been generated.
-- [ ] `data/manifests/native_validation_token_sheet.csv` has been generated.
+## Reviewer requirements
 
-### Native-speaker review
+Ideal reviewers should:
 
-- [ ] Select 2-3 native Twi/Akan speakers for pilot validation.
-- [ ] Give reviewers `docs/native_validation_protocol.md`.
-- [ ] Give reviewers `data/manifests/native_validation_token_sheet.csv`.
-- [ ] Ask reviewers to fill `native_tone_label`, `native_confidence`, `review_status`, and `reviewer_notes`.
+- be native or highly fluent Twi/Akan speakers;
+- be comfortable reading the orthography used in the dataset;
+- be willing to mark uncertainty rather than guess;
+- provide short comments for ambiguous cases.
 
-### After review
+## Minimum pilot target
 
-- [ ] Save completed file as `data/manifests/native_validation_token_sheet_completed.csv`.
-- [ ] Run `scripts/09_summarise_native_validation.py`.
-- [ ] Check `results/native_validation_summary.csv`.
-- [ ] Investigate rows with low confidence or candidate/native disagreement.
+For the first pilot, aim for:
 
-## Suggested pilot size
+- 2-3 reviewers;
+- 10 utterances;
+- token-level tone labels;
+- comments on ambiguity or orthographic issues.
 
-Start with 10 utterances. This keeps the first review manageable and lets us check whether the instructions make sense before scaling to the full 50-sample dev set.
+## What to check after review
+
+After reviewer sheets are returned, check:
+
+- number of reviewed tokens;
+- number of skipped tokens;
+- number of `UNK` labels;
+- agreement with candidate labels;
+- disagreement between reviewers, if multiple reviewers are used;
+- recurring causes of uncertainty.
+
+## Follow-up decision
+
+After the pilot, decide whether to:
+
+1. continue Gemini-assisted annotation with native validation;
+2. switch to a lexicon/rule-based workflow;
+3. ask Farmerline for a higher-quota API key or existing tone resources;
+4. reduce the labelled subset to a smaller high-quality development set.

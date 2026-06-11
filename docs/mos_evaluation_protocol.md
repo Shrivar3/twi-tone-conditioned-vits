@@ -2,24 +2,35 @@
 
 ## Purpose
 
-This evaluation measures the baseline naturalness and intelligibility of the current Farmerline Twi TTS checkpoint.
+This evaluation measures the perceived naturalness and intelligibility of the baseline Farmerline Twi TTS checkpoint.
 
 ## Samples
 
-Use the fixed Week 1 dev set:
+Use the fixed Week 1 development set:
 
-- `data/manifests/dev_set.csv`
-- 50 utterances
-- Audio generated from the baseline checkpoint should be placed under `outputs/baseline_tts/wavs/`.
+```text
+data/manifests/dev_set.csv
+```
+
+Generated baseline audio should be stored under:
+
+```text
+outputs/baseline_tts/wavs/
+```
+
+Do not commit generated audio to GitHub.
 
 ## Raters
 
-Target:
+Suggested pilot:
 
-- Pilot: 3-5 native Twi speakers
-- Full evaluation: 20 native Twi speakers
+- 3-5 native Twi/Akan speakers.
 
-## Rating Questions
+Suggested full evaluation:
+
+- 20 native Twi/Akan speakers, if available.
+
+## Rating questions
 
 For each audio sample, ask two questions.
 
@@ -43,28 +54,34 @@ How easy is it to understand?
 4 = mostly understandable  
 5 = perfectly clear
 
-## Raw Results Format
+## Raw results format
 
-Store raw ratings in `results/baseline_mos_raw.csv`.
+Store raw ratings in:
+
+```text
+results/baseline_mos_raw.csv
+```
 
 Required columns:
 
-- `rater_id`
-- `utt_id`
-- `naturalness_score`
-- `intelligibility_score`
-- `comments`
+```text
+rater_id,utt_id,naturalness_score,intelligibility_score,comments
+```
 
-## Summary Output
+## Summary output
 
-The summary script writes `results/baseline_mos_summary.csv`.
+The summary script writes:
+
+```text
+results/baseline_mos_summary.csv
+```
 
 Metrics:
 
-- number of ratings
-- number of raters
-- number of samples
-- mean naturalness MOS
-- standard deviation naturalness MOS
-- mean intelligibility MOS
-- standard deviation intelligibility MOS
+- number of ratings;
+- number of raters;
+- number of samples;
+- mean naturalness MOS;
+- standard deviation naturalness MOS;
+- mean intelligibility MOS;
+- standard deviation intelligibility MOS.
