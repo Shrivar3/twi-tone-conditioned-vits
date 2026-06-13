@@ -1,0 +1,15 @@
+audit_name,metric,value,notes
+farmerline_dataset,rows_scanned,,Filled by scripts/11_audit_farmerline_dataset.py
+farmerline_dataset,empty_text_rows,,Should be zero before training/evaluation
+farmerline_dataset,missing_duration_rows,,Should be investigated before duration-based sampling
+farmerline_dataset,unique_characters,,Use this to check tokenizer coverage
+farmerline_dataset,unique_lowercase_tokens,,Useful for coverage and normalisation checks
+farmerline_dataset,duplicated_text_rows,,High values may indicate leakage or repeated prompts
+farmerline_dataset,duration_seconds_median,,Useful for batching and GPU planning
+farmerline_dataset,text_duration_outliers,,Review rows in farmerline_text_duration_outliers.csv
+phoneme_dataset,rows_scanned,,Filled by scripts/12_audit_phoneme_dataset.py
+phoneme_dataset,unique_phoneme_tokens,,Use for phoneme-conditioned model design
+phoneme_dataset,unique_speakers,,Use before mixing with Farmerline data
+phoneme_dataset,duration_seconds_p95,,Long clips may need filtering before TTS use
+vocab_comparison,farmerline_only_chars,,Characters present in Farmerline but absent from phoneme dataset
+vocab_comparison,farmerline_only_token_count,,Rough estimate of transcript-domain mismatch

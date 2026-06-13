@@ -1,0 +1,13 @@
+metric,value
+farmerline_dataset_id,FarmerlineML/Twi_TTS2026_dataset
+farmerline_split,train
+phoneme_dataset_id,ghananlpcommunity/asante-twi-bible-speech-phonemes
+phoneme_split,train
+farmerline_unique_chars,31
+phoneme_dataset_unique_chars,52
+farmerline_only_chars,'cjqvxzã
+phoneme_dataset_only_chars,"!,-.:;?ABDEFGHIKLMNOPRSTUWYƆƐ"
+farmerline_unique_tokens,2969
+phoneme_dataset_unique_tokens,4275
+farmerline_only_token_count,2093
+phoneme_dataset_only_token_count,3399

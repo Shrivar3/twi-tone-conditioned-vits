@@ -1,0 +1,2 @@
+file,kind,notes,repo_id,repo_type,status,token_detected
+,access_error,"Repository not found or not accessible. This often means the repo is private/gated, the current environment is not logged in to Hugging Face, the repo_type is wrong, or the repo_id is misspelled. Run `huggingface-cli login` or set HF_TOKEN, then retry.",FarmerlineML/twi-tts-2026,model,repository_not_accessible,True
