@@ -2,25 +2,60 @@
 
 Repository for the RAIC / Farmerline Group Ghana Twi speech synthesis project.
 
-The project investigates tone-conditioned VITS-style text-to-speech for Twi/Akan. The immediate Week 1 goal is to establish a clean baseline evaluation workflow, prepare a tone-annotated development set, and set up native-speaker validation before moving into model changes.
+The project investigates tone-aware text-to-speech for Twi/Akan, starting from the current Farmerline TTS data and baseline model, then moving toward tone-conditioned or phoneme-informed VITS-style improvements.
 
-## Current Week 1 status
+## Current project status
 
-Completed or prepared:
+The repository is currently being prepared for GPU access and higher Gemini access.
 
-- Fixed development set from `FarmerlineML/Twi_TTS2026_dataset`.
-- Conservative Twi/Akan tone annotation pipeline.
-- Gemini-assisted candidate tone annotation pipeline for small pilot batches.
-- Native-speaker token-level validation workflow.
-- MOS, WER, and minimal-pair tone accuracy templates.
-- Summary scripts for MOS, WER, and native-validation outputs.
-- Baseline evaluation plan for the current `FarmerlineML/twi-tts-2026` checkpoint.
+At this stage, the useful work is no-GPU preparation:
 
-Current blockers / access needed:
+* dataset inspection;
+* text and Unicode audits;
+* phoneme inventory checks;
+* Farmerline-vs-phoneme dataset comparison;
+* model repository access checks;
+* documentation of current blockers.
 
-- Full baseline TTS and ASR/WER evaluation should be run on GPU compute, not GitHub Codespaces.
-- Gemini free-tier quota is too small for large-scale tone annotation.
-- Native-speaker review is needed before candidate tone labels can be treated as reference labels.
+Training, baseline synthesis, ASR/WER, MOS, and minimal-pair audio evaluation are not yet complete because they require GPU/model access.
+
+## Current tone-label assumption
+
+Farmerline has instructed us to treat Gemini tone outputs as the working reference labels for current development.
+
+Native-speaker review remains important and will be used later as an audit/correction layer, but it is not currently a blocker for using Gemini tone labels in early manifests, evaluation design, or tone-conditioning preparation.
+
+## Current access status
+
+The following datasets are accessible:
+
+* `FarmerlineML/Twi_TTS2026_dataset`
+* `ghananlpcommunity/asante-twi-bible-speech-phonemes`
+
+The current unresolved access issue is the baseline model repository. While logged into Hugging Face as `Shrivar`, both tested model IDs return 404 from the Hugging Face API:
+
+* `FarmerlineML/main_twi_TTS`
+* `FarmerlineML/twi-tts-2026`
+
+Farmerline should confirm the exact model repo ID and ensure the Hugging Face account has access before GPU time is used.
+
+## Completed / prepared
+
+* GitHub repository structure created.
+* Hugging Face dataset access tested.
+* Codespaces-safe development set utilities added.
+* Conservative Twi/Akan tone annotation pipeline added.
+* Gemini tone annotation pipeline added.
+* Native-speaker token-level validation workflow added.
+* MOS, WER, and minimal-pair tone accuracy templates added.
+* Summary scripts for MOS, WER, and native-validation outputs added.
+* No-GPU Week 2 inspection utilities added:
+
+  * Farmerline dataset audit.
+  * Asante Twi phoneme dataset audit.
+  * Phoneme inventory generation.
+  * Farmerline-vs-phoneme vocabulary comparison.
+  * Hugging Face model repository inspection.
 
 ## Important repository rules
 
@@ -28,162 +63,152 @@ GitHub should contain code, configs, small CSV manifests, templates, and result 
 
 Do **not** commit:
 
-- raw datasets;
-- generated audio;
-- model checkpoints;
-- Hugging Face cache files;
-- API keys or secrets;
-- local virtual environments.
+* raw datasets;
+* generated audio;
+* model checkpoints;
+* Hugging Face cache files;
+* API keys or secrets;
+* local virtual environments;
+* local patch bundles;
+* backup files.
 
 ## Repository structure
 
 ```text
-configs/                 YAML configs for Week 1 evaluation
-src/data/                Dataset loading and development-set utilities
-src/tone/                Tone annotation and validation utilities
-src/eval/                Baseline synthesis, ASR, MOS, and WER utilities
-scripts/                 Command-line entry points
-data/manifests/          Small CSV manifests and validation sheets
-data/minimal_pairs/      Minimal-pair templates for tone accuracy testing
-docs/                    Protocols and handoff notes
-results/                 Result templates and summaries
-outputs/                 Local generated outputs; ignored by Git
+configs/              YAML configs for evaluation and inspection
+src/data/             Dataset loading and development-set utilities
+src/tone/             Tone annotation and validation utilities
+src/eval/             Baseline synthesis, ASR, MOS, and WER utilities
+scripts/              Command-line entry points
+data/manifests/       Small CSV manifests and validation sheets
+data/minimal_pairs/   Minimal-pair templates for tone accuracy testing
+docs/                 Protocols, plans, and handoff notes
+results/              Result templates, summaries, and small audit outputs
+outputs/              Local generated outputs; ignored by Git
 ```
 
 ## Light Codespaces setup
 
-Use this for editing code, creating small manifests, Gemini pilot annotation, and validation sheets.
+Use this environment for editing code, creating small manifests, Gemini annotation preparation, validation sheets, and no-GPU data audits.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-gemini.txt
-python -m pip install datasets pandas pyyaml
+python -m pip install datasets pandas pyyaml huggingface_hub
 ```
 
-Avoid installing the full `requirements.txt` in Codespaces unless storage/compute has been confirmed. The full TTS/ASR stack can be large.
+Avoid committing local environments, generated audio, large datasets, model checkpoints, or local patch bundles.
 
-## Full GPU setup
+## Week 2 no-GPU inspection workflow
 
-Use GPU compute, such as the Farmerline/RAIC RunPod environment, for baseline TTS generation, ASR, WER, and later model training.
+### Farmerline dataset audit
 
 ```bash
-git clone https://github.com/Shrivar3/twi-tone-conditioned-vits.git
-cd twi-tone-conditioned-vits
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-hf auth login
+PYTHONPATH=. python scripts/11_audit_farmerline_dataset.py \
+  --split train \
+  --streaming \
+  --limit 1000
 ```
 
-## Week 1 workflow
+Expected small outputs:
 
-### 1. Create the fixed development set
+```text
+results/farmerline_dataset_audit_summary.csv
+results/farmerline_character_inventory.csv
+results/farmerline_token_inventory.csv
+results/farmerline_text_duration_outliers.csv
+```
+
+### Asante Twi phoneme dataset audit
 
 ```bash
-PYTHONPATH=. python scripts/01_make_dev_set.py --config configs/week1_eval.yaml
+PYTHONPATH=. python scripts/12_audit_phoneme_dataset.py \
+  --split train \
+  --streaming \
+  --limit 1000
+```
+
+Expected small outputs:
+
+```text
+results/phoneme_dataset_audit_summary.csv
+results/phoneme_inventory.csv
+results/phoneme_speaker_summary.csv
+results/phoneme_long_clip_candidates.csv
+```
+
+### Build phoneme inventory
+
+```bash
+PYTHONPATH=. python scripts/13_build_phoneme_inventory.py \
+  --limit-per-split 1000
 ```
 
 Expected output:
 
 ```text
-data/manifests/dev_set.csv
+results/phoneme_inventory.csv
 ```
 
-### 2. Create conservative tone annotations
+### Compare Farmerline and phoneme-dataset vocabulary
 
 ```bash
-PYTHONPATH=. python scripts/04_annotate_tone.py --config configs/week1_eval.yaml
+PYTHONPATH=. python scripts/14_compare_farmerline_to_phoneme_vocab.py \
+  --farmerline-limit 1000 \
+  --phoneme-limit 1000
 ```
 
 Expected outputs:
 
 ```text
-data/manifests/tone_annotated_dev.csv
-data/manifests/native_validation_sheet.csv
+results/farmerline_vs_phoneme_character_overlap.csv
+results/farmerline_vs_phoneme_token_overlap.csv
+results/farmerline_vs_phoneme_vocab_summary.csv
 ```
 
-### 3. Run Gemini candidate tone annotation for small pilot batches
-
-Set the API key in the terminal only. Do not commit it.
+### Inspect baseline model repository access
 
 ```bash
-read -s -p "Paste Gemini API key: " GEMINI_API_KEY
-echo
-export GEMINI_API_KEY
+PYTHONPATH=. python scripts/10_inspect_baseline_model.py \
+  --model-id FarmerlineML/main_twi_TTS \
+  --output results/model_file_inventory.csv
 ```
 
-Then run a small batch:
+Current result: model repository access is not yet working for the tested model IDs, even though dataset access works.
 
-```bash
-PYTHONPATH=. python scripts/05_gemini_annotate_tone.py \
-  --input data/manifests/dev_set.csv \
-  --output data/manifests/gemini_tone_annotated_dev.csv \
-  --model gemini-2.5-flash-lite \
-  --limit 5 \
-  --sleep 10 \
-  --resume
-```
+## Initial no-GPU audit findings
 
-Gemini outputs are candidate annotations only. They require native-speaker validation.
+Farmerline sample audit, first 1,000 train rows:
 
-### 4. Prepare native-speaker validation sheet
+* Empty text rows: 0
+* Duplicate text rows: 0
+* Median duration: 6.44 seconds
+* Duration range: 2.00 to 11.72 seconds
+* Unique characters: 31
+* Unique lowercase tokens: 2,969
 
-```bash
-PYTHONPATH=. python scripts/08_prepare_native_validation_pack.py \
-  --dev-csv data/manifests/dev_set.csv \
-  --gemini-csv data/manifests/gemini_tone_annotated_dev.csv \
-  --output data/manifests/native_validation_token_sheet.csv \
-  --limit-utterances 10
-```
+Asante Twi phoneme dataset sample audit, first 1,000 train rows:
 
-After native review, summarise results with:
+* Empty text rows: 0
+* Empty phoneme rows: 0
+* Unique phoneme tokens: 35
+* Unique speakers: 10
 
-```bash
-PYTHONPATH=. python scripts/09_summarise_native_validation.py \
-  --input data/manifests/native_validation_token_sheet.csv \
-  --output results/native_validation_summary.csv
-```
+Farmerline-vs-phoneme comparison, first 1,000 rows each:
 
-### 5. Run baseline TTS and WER on GPU compute
+* Farmerline unique characters: 31
+* Phoneme dataset unique characters: 52
+* Farmerline unique tokens: 2,969
+* Phoneme dataset unique tokens: 4,275
+* Farmerline-only token count: 2,093
+* Phoneme-dataset-only token count: 3,399
 
-This should be run on RunPod or another GPU environment, not Codespaces.
+Interpretation: the phoneme dataset is useful, but domain and text-normalisation differences are substantial. Case, punctuation, Unicode handling, and tokenisation should be normalised before using it directly for phoneme-informed modelling.
 
-First inspect the baseline model files:
+## Current blockers
 
-```bash
-PYTHONPATH=. python scripts/10_inspect_baseline_model.py
-```
-
-Then run baseline synthesis and WER once the model-loading details are confirmed:
-
-```bash
-PYTHONPATH=. python scripts/02_run_baseline_tts.py --config configs/week1_eval.yaml
-PYTHONPATH=. python scripts/03_run_asr_wer.py --config configs/week1_eval.yaml
-PYTHONPATH=. python scripts/07_summarise_wer.py \
-  --input results/baseline_wer.csv \
-  --output results/baseline_wer_summary.csv
-```
-
-## Expected small outputs to commit
-
-```text
-data/manifests/dev_set.csv
-data/manifests/tone_annotated_dev.csv
-data/manifests/native_validation_sheet.csv
-data/manifests/native_validation_token_sheet.csv
-results/baseline_wer_summary.csv
-results/baseline_mos_summary.csv
-results/native_validation_summary.csv
-results/week1_status.md
-```
-
-Generated audio should remain local or be stored in the agreed Farmerline storage location.
-
-## Current next steps
-
-1. Confirm GPU compute access with Farmerline/RAIC.
-2. Confirm Hugging Face/model access and storage for generated audio/results.
-3. Validate the pilot tone sheet with native Twi/Akan speakers.
-4. Run baseline TTS and round-trip ASR/WER on the fixed development set.
-5. Agree on the scalable tone annotation route before model modification/training.
+* GPU compute access is pending.
+* Higher Gemini quota/access is pending.
+* Farmerline should confirm the exact Hugging Face model repo ID and grant access if the repo is private/gated.
+* Farmerline should confirm where generated audio and result artefacts should be stored.
