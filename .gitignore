@@ -50,3 +50,10 @@ week2_repo_updates*.zip
 
 # Script backup files
 *.bak.*
+
+# Local patch/update bundles
+week2_repo_updates*/
+week2_repo_updates*.zip
+
+# Script backup files
+*.bak.*
