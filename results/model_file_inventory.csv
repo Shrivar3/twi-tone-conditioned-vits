@@ -1,2 +1,16 @@
-file,kind,notes,repo_id,repo_type,status,token_detected
-,access_error,"Repository not found or not accessible. This often means the repo is private/gated, the current environment is not logged in to Hugging Face, the repo_type is wrong, or the repo_id is misspelled. Run `huggingface-cli login` or set HF_TOKEN, then retry.",FarmerlineML/twi-tts-2026,model,repository_not_accessible,True
+architectures,extension,file,hidden_size,kind,model_type,notes,num_hidden_layers,pad_token,sampling_rate,status,tokenizer_class,unk_token,vocab_size
+,,.gitattributes,,file_inventory,,,,,,,,,
+,.md,README.md,,file_inventory,,,,,,,,,
+,.json,added_tokens.json,,file_inventory,,,,,,,,,
+,.json,config.json,,file_inventory,,,,,,,,,
+,.py,handler.py,,file_inventory,,,,,,,,,
+,.safetensors,model.safetensors,,file_inventory,,,,,,,,,
+,.json,preprocessor_config.json,,file_inventory,,,,,,,,,
+,.json,special_tokens_map.json,,file_inventory,,,,,,,,,
+,.json,tokenizer_config.json,,file_inventory,,,,,,,,,
+,.json,vocab.json,,file_inventory,,,,,,,,,
+"[""VitsModel""]",,config.json,192,json_summary,"""vits""",,6,,16000,ok,,,30
+,,tokenizer_config.json,,json_summary,,,,"""a""",,ok,"""VitsTokenizer""","""<unk>""",
+,,preprocessor_config.json,,json_summary,,,,,16000,ok,,,
+,,special_tokens_map.json,,json_summary,,,,"{""content"": ""a"", ""lstrip"": false, ""normalized"": false, ""rstrip"": false, ""single_word"": false}",,ok,,"{""content"": ""<unk>"", ""lstrip"": false, ""normalized"": false, ""rstrip"": false, ""single_word"": false}",
+,,vocab.json,,json_summary,,,,,,ok,,,
