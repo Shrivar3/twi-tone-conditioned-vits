@@ -10,7 +10,7 @@ dataset:
   duration_column: duration
   target_sampling_rate: 22050
 baseline_tts:
-  hf_model_id: FarmerlineML/twi-tts-2026
+  hf_model_id: FarmerlineML/main_twi_TTS
   output_dir: outputs/baseline_tts
   max_samples: null
   synthesise_mos_subset_only: false
