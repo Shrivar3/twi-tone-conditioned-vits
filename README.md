@@ -6,18 +6,21 @@ The project investigates tone-aware text-to-speech for Twi/Akan, starting from t
 
 ## Current project status
 
-The repository is currently being prepared for GPU access and higher Gemini access.
+The repository has moved beyond the initial no-GPU preparation stage.
 
-At this stage, the useful work is no-GPU preparation:
+A first GPU/RunPod baseline run has been completed. Baseline TTS audio was generated for 50 WER development-set samples using the Farmerline baseline TTS model currently recorded in the config as `FarmerlineML/main_twi_TTS`.
 
-* dataset inspection;
-* text and Unicode audits;
-* phoneme inventory checks;
-* Farmerline-vs-phoneme dataset comparison;
-* model repository access checks;
-* documentation of current blockers.
+The main unresolved issue is round-trip ASR/WER. The committed ASR/WER outputs are invalid because the ASR step used a Whisper-style configuration with `language: twi`, which failed with `Unsupported language: twi`. The resulting WER/CER values of 1.0 are diagnostic failure outputs, not real baseline scores.
 
-Training, baseline synthesis, ASR/WER, MOS, and minimal-pair audio evaluation are not yet complete because they require GPU/model access.
+The next GPU session should focus on rerunning ASR/WER with the correct Farmerline ASR model, `FarmerlineML/twi-asr-qwen2audio-merged`.
+
+Current useful work before the next GPU instance:
+
+- update repo status and summary documentation;
+- patch the ASR code/config for Qwen2-Audio inference;
+- prepare a one-sample ASR smoke test;
+- keep generated audio/checkpoints out of GitHub;
+- confirm how generated audio and larger result artefacts should be stored.
 
 ## Current tone-label assumption
 
@@ -29,15 +32,18 @@ Native-speaker review remains important and will be used later as an audit/corre
 
 The following datasets are accessible:
 
-* `FarmerlineML/Twi_TTS2026_dataset`
-* `ghananlpcommunity/asante-twi-bible-speech-phonemes`
+- `FarmerlineML/Twi_TTS2026_dataset`
+- `ghananlpcommunity/asante-twi-bible-speech-phonemes`
 
-The current unresolved access issue is the baseline model repository. While logged into Hugging Face as `Shrivar`, both tested model IDs return 404 from the Hugging Face API:
+The baseline TTS model currently recorded in the config is:
 
-* `FarmerlineML/main_twi_TTS`
-* `FarmerlineML/twi-tts-2026`
+- `FarmerlineML/main_twi_TTS`
 
-Farmerline should confirm the exact model repo ID and ensure the Hugging Face account has access before GPU time is used.
+The ASR model that should be used for the corrected WER run is:
+
+- `FarmerlineML/twi-asr-qwen2audio-merged`
+
+Generated audio, model checkpoints, Hugging Face caches, local RunPod outputs, and API keys should not be committed to GitHub.
 
 ## Completed / prepared
 
