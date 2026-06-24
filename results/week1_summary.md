@@ -1,50 +1,109 @@
 # Week 1 Summary
 
+Updated: 2026-06-24
+
 ## Dataset
+
 - Dataset: `FarmerlineML/Twi_TTS2026_dataset`
-- Split used for dev set: `test` split (dev rows map to test indices 0–51)
-- Number of WER samples: 50 (`wer_subset = True`)
-- Number of MOS samples: MOS subset flagged in the dev set (`mos_subset = True`) — confirm exact count from `data/manifests/dev_set.csv`
-- Number of tone-validation samples: 10 utterances (`dev_0000`–`dev_0009`), ~160 tokens
-- Duration filter: dev-set clips ~5–9 s; full-dataset range 2.00–11.72 s (median 6.44 s)
+- Split used for dev set: `test`
+- WER subset: 50 samples, `dev_0000` to `dev_0049`
+- MOS subset: flagged in `data/manifests/dev_set.csv`; intended sample count from config is 20
+- Tone-validation subset: prepared separately for native validation
+- Duration filter used for dev-set preparation: approximately 2-10 seconds
+- Initial audit result: full sampled Farmerline duration range was approximately 2.00-11.72 seconds, with median duration 6.44 seconds
 
 ## Baseline TTS
-- Checkpoint: status file lists `FarmerlineML/twi-tts-2026`, but Farmerline later confirmed the working repo is `FarmerlineML/main_twi_TTS` — **resolve this discrepancy and record the repo actually used**
-- Inference code path: `scripts/02_run_baseline_tts.py` → `src/eval/synth_baseline.py`
-- Number of generated samples: 50 (`dev_0000`–`dev_0049`)
-- Notes/errors: ran successfully on GPU (RunPod); audio generated for all 50 samples
 
-## Round-trip ASR WER
-- ASR model: ⚠️ a **Whisper-type** model was used (the error lists Whisper's supported languages). This is **incorrect** — the brief requires `FarmerlineML/twi-asr-qwen2audio-merged`
-- Text normalisation: n/a (no transcripts were produced)
-- Mean WER: 1.0 — **INVALID**
-- Median WER: 1.0 — **INVALID**
-- Mean CER: 1.0 — **INVALID**
-- Median CER: 1.0 — **INVALID**
-- Caveats: every one of the 50 rows failed with `ValueError: Unsupported language: twi`, so the `asr_transcript` column is empty and WER/CER defaulted to 1.0. **These are not real scores.** The WER step must be re-run on GPU using the correct Twi ASR model.
+- Baseline TTS model currently recorded in config: `FarmerlineML/main_twi_TTS`
+- Inference code path: `scripts/02_run_baseline_tts.py` to `src/eval/synth_baseline.py`
+- GPU status: baseline TTS was run once on GPU/RunPod
+- Generated samples: 50 WER dev-set samples
+- Output handling: generated audio should remain outside GitHub; only small manifests/results should be committed
+
+## Round-trip ASR/WER
+
+Current status: **invalid / must be rerun**
+
+The ASR/WER run currently committed to the repo should be treated as a failed diagnostic run, not as a real baseline result.
+
+What happened:
+
+- The current config uses `openai/whisper-small` with `language: twi`.
+- This is the wrong ASR setup for the project brief.
+- The ASR run failed with `Unsupported language: twi`.
+- The ASR transcript column is empty for the failed rows.
+- WER/CER values of 1.0 were produced because the hypotheses were empty after ASR failure.
+
+Current WER/CER values:
+
+- Mean WER: 1.0 — **invalid**
+- Median WER: 1.0 — **invalid**
+- Mean CER: 1.0 — **invalid**
+- Median CER: 1.0 — **invalid**
+
+These values must not be reported as baseline performance.
+
+Required correction:
+
+- Use `FarmerlineML/twi-asr-qwen2audio-merged`
+- Do not use Whisper language forcing for Twi
+- Run a one-sample smoke test first
+- Then rerun ASR over all 50 generated baseline samples
+- Recompute WER/CER only after non-empty ASR transcripts are produced
 
 ## MOS
-- Number of raters: not yet run (Farmerline to coordinate 10–20 native raters)
-- Number of samples: target 50 per rater
-- Naturalness MOS: not yet measured (baseline reference from brief: 3.5/5.0)
-- Intelligibility MOS: not yet measured
-- Caveats: requires the MOS evaluation interface + Farmerline-coordinated raters
+
+Current status: **not yet measured**
+
+Pending:
+
+- Baseline MOS naturalness
+- Baseline MOS intelligibility
+- Native-rater evaluation workflow
+- Farmerline coordination for native raters
 
 ## Tone annotation
-- Automatic method: Gemini (`gemini-2.5-flash`)
-- Number of tokens labelled H: compute from `data/manifests/gemini_tone_annotated_dev.csv`
-- Number of tokens labelled L: compute from full file (note: low tone is heavily dominant in the sample)
-- Number of tokens labelled F: compute from full file
-- Number of tokens labelled UNK: compute from full file (mostly loanwords/proper nouns, e.g. "minnesota")
-- Native validation subset size: 10 utterances (~160 tokens) — sheet prepared, sent to native reviewer (Akosua)
-- Native validation accuracy: pending reviewer return
-- Main issues discovered: Gemini over-assigns L (low tone); loanwords and proper nouns get UNK or low confidence; syllable-level vs token-level format still to be decided with Farmerline
 
-## Week 2 readiness
-- Is the baseline pipeline reproducible? Partially. Baseline TTS generation works; the ASR/WER step is broken (wrong ASR model) and must be fixed before the baseline is valid.
-- Are tone labels credible enough for model conditioning? Farmerline has approved Gemini outputs as working reference labels; native audit (in progress) will confirm quality.
-- What needs changing before modifying VITS:
-  1. Fix the ASR/WER step (use `FarmerlineML/twi-asr-qwen2audio-merged`) and produce a valid baseline WER.
-  2. Complete the native tone audit on the pilot sheet.
-  3. Confirm the baseline model repo ID actually used.
-  4. Agree syllable-level vs token-level tone format with Farmerline.
+- Gemini tone outputs are currently treated as the working reference labels, following Farmerline guidance.
+- Native-speaker review remains important but is currently a later audit/correction step rather than a blocker.
+- Native validation materials have been prepared, but full native-speaker validation is still pending.
+
+## No-GPU audit and Week 2 preparation
+
+Completed no-GPU preparation includes:
+
+- Farmerline dataset audit
+- Asante Twi phoneme dataset audit
+- Phoneme inventory generation
+- Farmerline-vs-phoneme vocabulary comparison
+- Hugging Face model repository inspection
+
+Key interpretation:
+
+The Asante Twi phoneme dataset is useful as a possible phoneme-informed resource, but it differs substantially from the Farmerline dataset in domain, casing, punctuation, Unicode conventions, and token distribution. Normalisation and careful alignment will be needed before using it directly for modelling.
+
+## Pending work
+
+Highest-priority pending work:
+
+1. Prepare ASR code/config for `FarmerlineML/twi-asr-qwen2audio-merged`.
+2. Obtain a new GPU instance.
+3. Recreate or verify baseline TTS audio files.
+4. Run one-sample Qwen2-Audio ASR smoke test.
+5. Rerun ASR on all 50 baseline generated samples.
+6. Recompute real WER/CER.
+7. Update this summary with valid WER/CER numbers.
+
+Still pending after ASR/WER:
+
+- Baseline MOS naturalness
+- Baseline MOS intelligibility
+- Minimal-pair tone-accuracy evaluation
+- Native-speaker audit of Gemini tone labels
+- Final decision on tone-conditioning format for model modification
+
+## Week 1 conclusion
+
+Week 1 preparation and the first baseline TTS generation step are substantially complete.
+
+The baseline evaluation is not complete because WER/CER is currently invalid. The next GPU session should focus on fixing ASR/WER before reporting any quantitative baseline speech-recognition metrics.
