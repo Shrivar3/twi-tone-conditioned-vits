@@ -1,6 +1,7 @@
 project:
   name: twi-tone-conditioned-vits
   seed: 42
+
 dataset:
   hf_dataset_id: FarmerlineML/Twi_TTS2026_dataset
   train_split: train
@@ -9,16 +10,21 @@ dataset:
   audio_column: audio
   duration_column: duration
   target_sampling_rate: 22050
+
 baseline_tts:
   hf_model_id: FarmerlineML/main_twi_TTS
   output_dir: outputs/baseline_tts
   max_samples: null
   synthesise_mos_subset_only: false
+
 asr:
-  hf_model_id: openai/whisper-small
-  language: twi
-  task: transcribe
+  hf_model_id: FarmerlineML/twi-asr-qwen2audio-merged
+  backend: qwen2_audio
+  language: null
+  task: null
   output_csv: results/asr_transcripts.csv
+  max_new_tokens: 256
+
 dev_set:
   output_csv: data/manifests/dev_set.csv
   split: test
@@ -29,11 +35,14 @@ dev_set:
   max_duration_seconds: 10.0
   duration_bins: 5
   max_stream_examples: 500
+
 wer:
   output_csv: results/baseline_wer.csv
   text_normalisation_config: configs/text_normalisation.yaml
+
 mos:
   template_csv: results/baseline_mos_template.csv
+
 tone_annotation:
   output_csv: data/manifests/tone_annotated_dev.csv
   validation_sheet_csv: data/manifests/native_validation_sheet.csv
