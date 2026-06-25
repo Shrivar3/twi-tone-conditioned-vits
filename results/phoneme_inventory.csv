@@ -1,36 +1,36 @@
-phoneme,count,share
-a,11410,0.16870213
-n,6731,0.09952095
-e̘,5689,0.08411450
-o̘,5488,0.08114262
-e,3939,0.05823994
-i̘,3539,0.05232575
-m,3509,0.05188219
-o,3474,0.05136470
-s,3014,0.04456339
-u̘,2339,0.03458320
-w,2313,0.03419878
-r,2079,0.03073898
-d,2014,0.02977792
-b,1573,0.02325753
-f,1290,0.01907325
-j,1068,0.01579087
-h,1049,0.01550995
-n̩,1040,0.01537688
-k,973,0.01438626
-t,941,0.01391312
-m̩,776,0.01147352
-nʲ,523,0.00773280
-p,514,0.00759973
-ŋk,500,0.00739273
-nt,364,0.00538191
-l,253,0.00374072
-kʲ,246,0.00363722
-hʲ,210,0.00310495
-hʷ,186,0.00275010
-gʲ,180,0.00266138
-mp,138,0.00204039
-g,104,0.00153769
-nʷ,93,0.00137505
-kʷ,64,0.00094627
-nd,11,0.00016264
+phoneme,count,share,example_texts
+a,34005,0.16943790,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+n,19952,0.09941553,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona."
+e̘,16685,0.08313693,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+o̘,16504,0.08223506,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona."
+e,11780,0.05869662,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+m,10442,0.05202972,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+i̘,10356,0.05160120,"Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie?"
+o,10271,0.05117767,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona."
+s,9057,0.04512863,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+w,6766,0.03371318,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+u̘,6715,0.03345906,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie?"
+r,6453,0.03215359,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+d,5791,0.02885502,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie?"
+b,4783,0.02383242,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+f,3820,0.01903405,"Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na wɔn a wɔgyina hɔ no kaa sɛ: Nyankopɔn sɔfo panin na woya no yi? || Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g"
+j,3114,0.01551624,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkɔ ɔbaa a ne nsabuo mu ne ho nteeɛ no ho nkɔyi nadagya so."
+n̩,3091,0.01540163,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkɔ ɔbaa a ne nsabuo mu ne ho nteeɛ no ho nkɔyi nadagya so."
+k,3043,0.01516246,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+h,2801,0.01395664,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie?"
+t,2695,0.01342847,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene."
+m̩,2329,0.01160479,"Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na ɔhunuu wɔn no, ɔfirii ne ntomadan pono ano tuu mmirika kɔhyiaa wɔn, na ɔbɔɔ ne mu ase kaa sɛ: Me wura, sɛ manya wanim || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka "
+ŋk,1583,0.00788767,"Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na nkɔ ɔbaa a ne nsabuo mu ne ho nteeɛ no ho nkɔyi nadagya so. || Na nkɔ ɔbaa a ne nsabuo mu ne ho nteeɛ no ho nkɔyi nadagya so."
+nʲ,1547,0.00770829,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie? || Na nkurɔfoɔ akuakuo no nyinaa ho dwirii wɔn, na wɔkaa sɛ: Ɛnyɛ Dawid ba no nie?"
+p,1520,0.00757376,"Me ba, sɛ wakoma hunu nyansa a, me ara nso makoma bɛtɔ me yam, na me kra ho bɛsɛpɛ no, sɛ wano reka deɛ ɛtene. || Na wɔn a wɔgyina hɔ no kaa sɛ: Nyankopɔn sɔfo panin na woya no yi? || Na wɔn a wɔgyina hɔ no kaa sɛ: Nyankopɔn sɔfo panin na woya no yi?"
+nt,1070,0.00533153,"Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona. || Na wɔtwee ntonto no, ntonto no bɔɔ Yona."
+kʲ,798,0.00397622,"Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka  || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka "
+l,775,0.00386162,"Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka "
+hʲ,631,0.00314411,"Na ɔhunuu wɔn no, ɔfirii ne ntomadan pono ano tuu mmirika kɔhyiaa wɔn, na ɔbɔɔ ne mu ase kaa sɛ: Me wura, sɛ manya wanim || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka  || Na ɔduruiɛ no, ɔhyɛn totorobɛnto Efraim bepɔ so, na Israelfoɔ no ne no siane firii bepɔ no so, na ɔdii wɔn anim; na ɔka "
+gʲ,611,0.00304445,"Na nkɔ ɔbaa a ne nsabuo mu ne ho nteeɛ no ho nkɔyi nadagya so. || Na wɔn a wɔgyina hɔ no kaa sɛ: Nyankopɔn sɔfo panin na woya no yi? || Wɔde nyansa na ɛsi dan, na wɔde nhunumu ma no gyina, na wɔnam nimdeɛ so de ahodeɛ aboɔdenneɛ afɛfɛdeɛ nyinaa."
+hʷ,517,0.00257607,Deɛ ɛwɔ hɔ a aniwa hu no yɛ sene deɛ akɔnnɔ kyini hwehwɛ. || Deɛ ɛwɔ hɔ a aniwa hu no yɛ sene deɛ akɔnnɔ kyini hwehwɛ. || a nnwanhwɛfoɔ funi mu.
+mp,349,0.00173897,"Sebulon tenabea bɛkyerɛ mpoano, na wahwɛ deɛ ahyɛn gyinagyina, na ɔne Sidon abɔ hyeɛ. || Na wɔhunuu Eleasa mma mu mmarima no mu atitire bebree sene Itamar mma mu, na wɔbuu wɔn mu: Eleasa mma nyaa mpanimfie ati || Na wɔhunuu Eleasa mma mu mmarima no mu atitire bebree sene Itamar mma mu, na wɔbuu wɔn mu: Eleasa mma nyaa mpanimfie ati"
+g,312,0.00155461,"Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na Odiyifoɔ Elisa frɛɛ adiyifoɔ mma no mu baako ka kyerɛɛ no sɛ: Bɔ abɔsoɔ, na fa ngo toa yi kura wo nsam, na kɔ Ramot-g || Na afuo mu nnua nyinaa nnya mmaa asase so, na afuo mu nhahan nyinaa nnya mfifirii, ɛfiri sɛ na AWURADE Nyankopɔn nnya nt"
+nʷ,292,0.00145496,"a nnwanhwɛfoɔ funi mu. || Na wɔhunuu Eleasa mma mu mmarima no mu atitire bebree sene Itamar mma mu, na wɔbuu wɔn mu: Eleasa mma nyaa mpanimfie ati || Adɛn nti na manwu yafunu mu, na mannyaa mu, awoeɛ?"
+kʷ,205,0.00102146,"Ɛfiri sɛ AWURADE nim teneneefoɔ kwan, na abɔnefoɔ kwan deɛ, ɛbɛyera. || Ɛfiri sɛ AWURADE nim teneneefoɔ kwan, na abɔnefoɔ kwan deɛ, ɛbɛyera. || Na Honhom no maa no kɔɔ asɔrefie hɔ; na abɔfra Yesu awofoɔ no de no baa sɛ wɔrebɛyɛ sɛdeɛ mmara no teɛ ama no no, ɔfaa n"
+nd,30,0.00014948,"Afa rehu dendeenden, ogya rehye sumpii; wɔbere ho kwa, ɛfiri sɛ wɔnyii abɔnefoɔ mfirii wɔn mu. || Afa rehu dendeenden, ogya rehye sumpii; wɔbere ho kwa, ɛfiri sɛ wɔnyii abɔnefoɔ mfirii wɔn mu. || Odiyifoɔ no abooboo denden."
