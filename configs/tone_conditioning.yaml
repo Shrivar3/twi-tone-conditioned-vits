@@ -1,0 +1,50 @@
+# configs/tone_conditioning.yaml
+
+model:
+  baseline_model_id: FarmerlineML/main_twi_TTS
+  architecture: additive_tone_embedding_vits
+  sampling_rate: 16000
+
+tone_conditioning:
+  tone_labels:
+    - PAD
+    - NONE
+    - UNK
+    - H
+    - L
+    - M
+    - F
+    - R
+    - HL
+    - LH
+    - DOWNSTEP
+
+  # Initial experiment:
+  # hidden_i = char_embedding_i + tone_embedding_i
+  injection_point: text_encoder_input_embedding
+  tone_embedding_scale_initial_smoke_test: 0.0
+  tone_embedding_scale_train: 1.0
+
+alignment:
+  expected_tokenizer_class: VitsTokenizer
+  tokenizer_phonemize_expected: false
+  tokenizer_normalize_expected: true
+  note: >
+    Farmerline tokenizer has add_blank=true and pad_token='a'. Because vocab also
+    maps 'a' to id 0, tone alignment should not identify blanks purely by token id.
+    Use positional length patterns and audit alignment_status before training.
+
+training_note: >
+  Hugging Face Transformers VITS supports inference cleanly, but full VITS training
+  is not implemented in the normal forward(labels=...) path. For real finetuning,
+  adapt a VITS training loop or move this tone embedding idea into a VITS training
+  implementation.
+
+evaluation:
+  primary:
+    - native_speaker_tone_accuracy
+    - minimal_pair_ABX
+    - F0_contour_check
+  secondary:
+    - WER
+    - MOS
