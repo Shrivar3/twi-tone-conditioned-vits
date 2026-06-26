@@ -12,11 +12,17 @@ from pydantic import BaseModel, Field
 
 
 class ToneItem(BaseModel):
-    token: str = Field(description="The original Twi token.")
+    token: str = Field(description="The original Twi/Akan token.")
+    english_gloss_auto: str = Field(
+        description=(
+            "A short automatic English gloss for this token. "
+            "Use UNK if the meaning cannot be inferred safely."
+        )
+    )
     tone_sequence: str = Field(
         description=(
-            "Candidate lexical tone sequence for this token. Use H for high, "
-            "L for low, F for falling, combinations like H-L where needed, "
+            "Candidate lexical tone sequence for this token. "
+            "Use H for high, L for low, F for falling, combinations like H-L where needed, "
             "or UNK if tone cannot be reliably inferred."
         )
     )
@@ -29,6 +35,12 @@ class ToneItem(BaseModel):
 
 
 class ToneAnnotation(BaseModel):
+    english_gloss_auto: str = Field(
+        description=(
+            "A simple automatic English gloss of the full Twi/Akan sentence. "
+            "This is only a reviewer aid, not a final reference translation."
+        )
+    )
     items: list[ToneItem]
     sentence_confidence: float = Field(
         description="Overall confidence from 0.0 to 1.0 for the sentence annotation."
@@ -63,7 +75,9 @@ def _make_prompt(text: str, tokens: list[str]) -> str:
     return (
         "You are assisting a Twi/Akan speech synthesis research project.\n\n"
         "Task:\n"
-        "Annotate the lexical tone of each Twi token in the sentence.\n\n"
+        "1. Provide a simple English gloss of the full Twi/Akan sentence.\n"
+        "2. Annotate the lexical tone of each Twi/Akan token.\n"
+        "3. Provide a short automatic English gloss for each token.\n\n"
         "Tone labels:\n"
         "- H = high tone\n"
         "- L = low tone\n"
@@ -75,7 +89,9 @@ def _make_prompt(text: str, tokens: list[str]) -> str:
         "3. Use UNK when tone cannot be reliably inferred from the written text.\n"
         "4. Candidate labels are allowed, but uncertain labels must have low confidence.\n"
         "5. Set needs_native_review=true whenever any token is uncertain.\n"
-        "6. Keep reasons short.\n\n"
+        "6. Keep reasons short.\n"
+        "7. The English gloss is only to help a native speaker reviewer understand the intended meaning.\n"
+        "8. If the Twi wording could have multiple meanings, say so in overall_comment.\n\n"
         f"Sentence:\n{text}\n\n"
         f"Tokens JSON:\n{json.dumps(tokens, ensure_ascii=False)}\n\n"
         "Return JSON only."
@@ -94,13 +110,13 @@ def annotate_text_with_gemini(
     temperature: float = 0.1,
 ) -> ToneAnnotation:
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
     if not api_key:
-        raise RuntimeError(
-            "Missing Gemini API key. Set GEMINI_API_KEY or GOOGLE_API_KEY first."
-        )
+        raise RuntimeError("Missing Gemini API key. Set GEMINI_API_KEY or GOOGLE_API_KEY first.")
 
     tokens = text.split()
     prompt = _make_prompt(text=text, tokens=tokens)
+
     client = genai.Client(api_key=api_key)
 
     try:
@@ -125,6 +141,7 @@ def annotate_text_with_gemini(
             "Warning: structured-output call failed. "
             f"Retrying with plain JSON prompt. Error: {structured_error}"
         )
+
         response = client.models.generate_content(
             model=model,
             contents=prompt + "\nReturn only valid JSON matching the requested schema.",
@@ -136,8 +153,8 @@ def annotate_text_with_gemini(
     if len(annotation.items) != len(tokens):
         annotation.needs_native_review = True
         annotation.overall_comment = (
-            f"Token count mismatch: expected {len(tokens)}, got "
-            f"{len(annotation.items)}. Native review required. "
+            f"Token count mismatch: expected {len(tokens)}, got {len(annotation.items)}. "
+            "Native review required. "
             + annotation.overall_comment
         )
 
@@ -146,10 +163,12 @@ def annotate_text_with_gemini(
 
 def _flatten_annotation(annotation: ToneAnnotation) -> dict[str, Any]:
     return {
+        "gemini_english_gloss_auto": annotation.english_gloss_auto,
         "gemini_tokens": " ".join(item.token for item in annotation.items),
-        "gemini_tone_sequence": " ".join(
-            item.tone_sequence for item in annotation.items
+        "gemini_token_english_glosses": " | ".join(
+            item.english_gloss_auto for item in annotation.items
         ),
+        "gemini_tone_sequence": " ".join(item.tone_sequence for item in annotation.items),
         "gemini_token_confidences": " ".join(
             f"{item.confidence:.3f}" for item in annotation.items
         ),
@@ -178,6 +197,7 @@ def annotate_csv_with_gemini(
     output_csv.parent.mkdir(parents=True, exist_ok=True)
 
     done_ids: set[str] = set()
+
     if resume and output_csv.exists():
         with output_csv.open("r", encoding="utf-8", newline="") as f:
             reader = csv.DictReader(f)
@@ -194,7 +214,9 @@ def annotate_csv_with_gemini(
         "gemini_model",
         "gemini_status",
         "gemini_error",
+        "gemini_english_gloss_auto",
         "gemini_tokens",
+        "gemini_token_english_glosses",
         "gemini_tone_sequence",
         "gemini_token_confidences",
         "gemini_sentence_confidence",
@@ -209,6 +231,7 @@ def annotate_csv_with_gemini(
 
     write_header = (not output_csv.exists()) or (not resume)
     mode = "a" if resume else "w"
+
     processed_now = 0
 
     with output_csv.open(mode, encoding="utf-8", newline="") as f:
@@ -232,25 +255,31 @@ def annotate_csv_with_gemini(
 
             try:
                 print(f"Annotating {utt_id}: {text[:80]}")
+
                 annotation = annotate_text_with_gemini(
                     text=text,
                     model=model,
                     temperature=temperature,
                 )
+
                 out.update(_flatten_annotation(annotation))
                 out["gemini_status"] = "ok"
                 out["gemini_error"] = ""
+
             except Exception as exc:
                 if _is_quota_or_availability_error(exc):
                     print(
                         "Gemini is rate-limited or temporarily unavailable. "
-                        f"Stopping before writing {utt_id}. Error: {repr(exc)[:300]}"
+                        f"Stopping before writing {utt_id}. "
+                        f"Error: {repr(exc)[:300]}"
                     )
                     break
 
                 out["gemini_status"] = "error"
                 out["gemini_error"] = repr(exc)
+                out["gemini_english_gloss_auto"] = ""
                 out["gemini_tokens"] = ""
+                out["gemini_token_english_glosses"] = ""
                 out["gemini_tone_sequence"] = ""
                 out["gemini_token_confidences"] = ""
                 out["gemini_sentence_confidence"] = ""
@@ -260,6 +289,7 @@ def annotate_csv_with_gemini(
 
             writer.writerow(out)
             f.flush()
+
             processed_now += 1
 
             if sleep_seconds > 0:
