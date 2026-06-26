@@ -6,6 +6,48 @@ This protocol validates candidate Twi/Akan tone annotations for the Week 1 tone-
 
 Candidate tone labels from Gemini or heuristic rules are not ground truth. They are suggestions to speed up review. Native-speaker labels should be treated as the reference labels for evaluation and later model conditioning.
 
+## English gloss and reviewer notes update
+
+The native validation sheet now includes automatic English glosses to help reviewers understand the intended meaning of each Twi/Akan utterance.
+
+These glosses are only reviewer aids. They are not final translations and should not overwrite the original Twi/Akan text.
+
+The relevant columns are:
+
+| Column | Purpose |
+|---|---|
+| `content_text_twi` | Original Twi/Akan text from the dataset. Do not edit this column. |
+| `content_text_english_gloss_auto` | Automatic English gloss of the full Twi/Akan sentence. Use this to understand the intended meaning. |
+| `token` | The Twi/Akan token being reviewed. |
+| `token_english_gloss_auto` | Automatic English gloss for the individual token, where available. |
+| `candidate_tone` | Gemini's candidate tone label. |
+| `candidate_reason` | Gemini's short reason for the candidate tone label. |
+| `reviewer_note_prompt` | A helper prompt explaining what the reviewer should check. |
+| `native_tone_label` | Native speaker's corrected tone label. |
+| `native_corrected_token` | Corrected native token if the token is wrong, unnatural, or badly split. |
+| `native_corrected_twi_sentence` | More natural native Twi/Akan wording if the full sentence should be corrected. |
+| `native_english_meaning_note` | Native speaker's correction or clarification of the English meaning. |
+| `reviewer_notes` | Main free-text reviewer note column. Use this especially for meaning, wording, and native-language corrections. |
+
+Reviewers should use `reviewer_notes` especially when:
+
+- the automatic English gloss is wrong or incomplete;
+- the Twi/Akan wording is unnatural;
+- there is a better native word or phrase;
+- the tokenisation is wrong;
+- the tone depends on context;
+- the candidate tone label is wrong;
+- the item needs discussion before it can be used as a reliable training label.
+
+The most important fields for reviewer feedback are:
+
+1. `native_tone_label`
+2. `native_english_meaning_note`
+3. `native_corrected_twi_sentence`
+4. `reviewer_notes`
+
+The `reviewer_notes` column should be treated as the main place for qualitative feedback from the native speaker.
+
 ## Input files
 
 ```text
