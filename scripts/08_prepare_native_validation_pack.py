@@ -1,179 +1,244 @@
+# Prepare native-speaker tone validation pack.
+#
+# This script takes Gemini tone annotations and creates a reviewer-friendly
+# token-level validation sheet.
+#
+# The sheet includes:
+# - the original Twi/Akan text;
+# - an automatic English gloss of the full text;
+# - token-level English glosses where available;
+# - Gemini candidate tone labels;
+# - a reviewer_note_prompt column explaining what the reviewer should check;
+# - blank reviewer columns for corrected native tone labels, meaning notes,
+#   better native wording, and general reviewer notes.
+#
+# Usage:
+#   PYTHONPATH=. python scripts/08_prepare_native_validation_pack.py
+#
+# Optional:
+#   PYTHONPATH=. python scripts/08_prepare_native_validation_pack.py \
+#     --input data/manifests/gemini_tone_annotated_dev.csv \
+#     --output data/manifests/native_tone_validation_sheet.csv
+
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 from pathlib import Path
 from typing import Any
 
-
-OUTPUT_COLUMNS = [
-    "utt_id",
-    "token_index",
-    "token",
-    "context_text",
-    "candidate_tone",
-    "candidate_confidence",
-    "candidate_source",
-    "candidate_reason",
-    "native_tone_label",
-    "native_confidence",
-    "review_status",
-    "reviewer_id",
-    "reviewer_notes",
-]
+import pandas as pd
 
 
-def _read_csv(path: Path) -> list[dict[str, str]]:
-    if not path.exists():
-        return []
-    with path.open("r", encoding="utf-8", newline="") as f:
-        return list(csv.DictReader(f))
-
-
-def _write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-
-
-def _safe_float(value: Any) -> str:
-    try:
-        return f"{float(value):.3f}"
-    except (TypeError, ValueError):
+def safe_str(value: Any) -> str:
+    """Convert a possibly missing CSV value to a clean string."""
+    if value is None:
         return ""
+    try:
+        if pd.isna(value):
+            return ""
+    except TypeError:
+        pass
+    return str(value)
 
 
-def _load_gemini_by_utt(path: Path) -> dict[str, dict[str, str]]:
-    rows = _read_csv(path)
-    out: dict[str, dict[str, str]] = {}
-    for row in rows:
-        utt_id = row.get("utt_id", "")
-        if utt_id and row.get("gemini_status", "ok") == "ok":
-            out[utt_id] = row
-    return out
+def parse_items_json(value: Any) -> list[dict[str, Any]]:
+    """Parse Gemini token-level JSON if it exists."""
+    text = safe_str(value).strip()
+
+    if not text:
+        return []
+
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        return []
+
+    if not isinstance(parsed, list):
+        return []
+
+    return [item for item in parsed if isinstance(item, dict)]
 
 
-def _items_from_gemini_row(row: dict[str, str]) -> list[dict[str, Any]]:
-    raw = row.get("gemini_items_json", "")
-    if raw:
-        try:
-            items = json.loads(raw)
-            if isinstance(items, list):
-                return [item for item in items if isinstance(item, dict)]
-        except json.JSONDecodeError:
-            pass
+def split_pipe_field(value: Any) -> list[str]:
+    """Split fields stored as 'a | b | c'."""
+    text = safe_str(value).strip()
 
-    tokens = row.get("gemini_tokens", "").split()
-    tones = row.get("gemini_tone_sequence", "").split()
-    confs = row.get("gemini_token_confidences", "").split()
+    if not text:
+        return []
 
-    items: list[dict[str, Any]] = []
-    for i, token in enumerate(tokens):
-        items.append(
-            {
-                "token": token,
-                "tone_sequence": tones[i] if i < len(tones) else "UNK",
-                "confidence": confs[i] if i < len(confs) else "",
-                "reason": "Gemini candidate label.",
-            }
-        )
-    return items
+    return [part.strip() for part in text.split("|")]
 
 
-def _make_rows(
-    dev_rows: list[dict[str, str]],
-    gemini_by_utt: dict[str, dict[str, str]],
-    limit_utterances: int | None,
-) -> list[dict[str, Any]]:
-    out_rows: list[dict[str, Any]] = []
-    selected = dev_rows[:limit_utterances] if limit_utterances else dev_rows
+def make_reviewer_note_prompt(
+    content_text_twi: str,
+    english_gloss_auto: str,
+    token: str,
+    token_english_gloss_auto: str,
+    candidate_tone: str,
+    candidate_reason: str,
+) -> str:
+    """Create a reviewer guidance note for each token row."""
 
-    for dev_row in selected:
-        utt_id = dev_row.get("utt_id", "")
-        text = dev_row.get("text", "")
-        gemini_row = gemini_by_utt.get(utt_id)
+    token_meaning_part = ""
+    if token_english_gloss_auto:
+        token_meaning_part = f" The automatic token gloss is: '{token_english_gloss_auto}'."
 
-        if gemini_row:
-            items = _items_from_gemini_row(gemini_row)
-            source = "gemini"
-        else:
-            items = [
-                {
-                    "token": token,
-                    "tone_sequence": "UNK",
-                    "confidence": "0.000",
-                    "reason": "No Gemini candidate available; native review required.",
-                }
-                for token in text.split()
-            ]
-            source = "blank_native_review"
+    reason_part = ""
+    if candidate_reason:
+        reason_part = f" Gemini reason: {candidate_reason}"
 
-        for idx, item in enumerate(items):
-            out_rows.append(
+    return (
+        f"Full Twi/Akan text: {content_text_twi} "
+        f"Automatic English gloss of full text: {english_gloss_auto} "
+        f"Token under review: '{token}'."
+        f"{token_meaning_part} "
+        f"Candidate tone label: {candidate_tone}."
+        f"{reason_part} "
+        "Please use reviewer_notes especially to correct the English meaning, "
+        "suggest the right native word or phrase, flag unnatural Twi/Akan wording, "
+        "explain context-dependent meanings, or explain why the candidate tone is wrong."
+    )
+
+
+def build_native_validation_sheet(
+    input_csv: Path,
+    output_csv: Path,
+    text_column: str,
+) -> Path:
+    """Build token-level native validation CSV."""
+
+    df = pd.read_csv(input_csv)
+    output_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    output_rows: list[dict[str, Any]] = []
+
+    for source_row_index, row in df.iterrows():
+        utt_id = safe_str(row.get("utt_id", source_row_index))
+        content_text_twi = safe_str(row.get(text_column, ""))
+
+        # New preferred full-sentence English gloss column.
+        english_gloss_auto = safe_str(row.get("gemini_english_gloss_auto", ""))
+
+        # Backward-compatible fallback in case the older file used another name.
+        if not english_gloss_auto:
+            english_gloss_auto = safe_str(row.get("english_gloss_auto", ""))
+
+        sentence_confidence = safe_str(row.get("gemini_sentence_confidence", ""))
+        needs_native_review = safe_str(row.get("gemini_needs_native_review", ""))
+        gemini_overall_comment = safe_str(row.get("gemini_overall_comment", ""))
+
+        items = parse_items_json(row.get("gemini_items_json", ""))
+
+        # Backward-compatible fallbacks for older Gemini annotation files.
+        fallback_tokens = safe_str(row.get("gemini_tokens", "")).split()
+        fallback_tones = safe_str(row.get("gemini_tone_sequence", "")).split()
+        fallback_confidences = safe_str(row.get("gemini_token_confidences", "")).split()
+        fallback_token_glosses = split_pipe_field(row.get("gemini_token_english_glosses", ""))
+
+        if not items:
+            n_items = max(
+                len(fallback_tokens),
+                len(fallback_tones),
+                len(fallback_confidences),
+                len(fallback_token_glosses),
+            )
+
+            for i in range(n_items):
+                items.append(
+                    {
+                        "token": fallback_tokens[i] if i < len(fallback_tokens) else "",
+                        "english_gloss_auto": (
+                            fallback_token_glosses[i]
+                            if i < len(fallback_token_glosses)
+                            else ""
+                        ),
+                        "tone_sequence": fallback_tones[i] if i < len(fallback_tones) else "",
+                        "confidence": (
+                            fallback_confidences[i]
+                            if i < len(fallback_confidences)
+                            else ""
+                        ),
+                        "reason": "",
+                    }
+                )
+
+        for token_index, item in enumerate(items):
+            token = safe_str(item.get("token", ""))
+            token_english_gloss_auto = safe_str(item.get("english_gloss_auto", ""))
+            candidate_tone = safe_str(item.get("tone_sequence", ""))
+            candidate_confidence = safe_str(item.get("confidence", ""))
+            candidate_reason = safe_str(item.get("reason", ""))
+
+            output_rows.append(
                 {
                     "utt_id": utt_id,
-                    "token_index": idx,
-                    "token": item.get("token", ""),
-                    "context_text": text,
-                    "candidate_tone": item.get("tone_sequence", "UNK"),
-                    "candidate_confidence": _safe_float(item.get("confidence", "")),
-                    "candidate_source": source,
-                    "candidate_reason": str(item.get("reason", "")).replace("\n", " ").replace("\r", " "),
+                    "source_row_index": source_row_index,
+                    "token_index": token_index,
+                    "content_text_twi": content_text_twi,
+                    "content_text_english_gloss_auto": english_gloss_auto,
+                    "token": token,
+                    "token_english_gloss_auto": token_english_gloss_auto,
+                    "candidate_tone": candidate_tone,
+                    "candidate_confidence": candidate_confidence,
+                    "candidate_reason": candidate_reason,
+                    "sentence_confidence": sentence_confidence,
+                    "needs_native_review": needs_native_review,
+                    "gemini_overall_comment": gemini_overall_comment,
+                    "reviewer_note_prompt": make_reviewer_note_prompt(
+                        content_text_twi=content_text_twi,
+                        english_gloss_auto=english_gloss_auto,
+                        token=token,
+                        token_english_gloss_auto=token_english_gloss_auto,
+                        candidate_tone=candidate_tone,
+                        candidate_reason=candidate_reason,
+                    ),
                     "native_tone_label": "",
-                    "native_confidence": "",
-                    "review_status": "pending",
-                    "reviewer_id": "",
+                    "native_corrected_token": "",
+                    "native_corrected_twi_sentence": "",
+                    "native_english_meaning_note": "",
+                    "auto_annotation_correct": "",
+                    "review_status": "",
                     "reviewer_notes": "",
                 }
             )
-    return out_rows
 
+    output_df = pd.DataFrame(output_rows)
+    output_df.to_csv(output_csv, index=False)
 
-def prepare_native_validation_pack(
-    dev_csv: Path,
-    gemini_csv: Path,
-    output_csv: Path,
-    limit_utterances: int | None = None,
-) -> Path:
-    dev_rows = _read_csv(dev_csv)
-    if not dev_rows:
-        raise RuntimeError(f"No rows found in {dev_csv}")
-
-    gemini_by_utt = _load_gemini_by_utt(gemini_csv)
-    rows = _make_rows(dev_rows, gemini_by_utt, limit_utterances)
-    _write_csv(output_csv, rows, OUTPUT_COLUMNS)
-
-    n_utt = len({row["utt_id"] for row in rows})
-    n_with_gemini = len({row["utt_id"] for row in rows if row["candidate_source"] == "gemini"})
-
-    print(f"Saved native validation sheet to {output_csv}")
-    print(f"Utterances included: {n_utt}")
-    print(f"Utterances with Gemini candidates: {n_with_gemini}")
-    print(f"Token rows for review: {len(rows)}")
+    print(f"Wrote {len(output_df)} token-level validation rows to {output_csv}")
     return output_csv
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare a token-level native-speaker tone validation sheet.")
-    parser.add_argument("--dev-csv", default="data/manifests/dev_set.csv")
-    parser.add_argument("--gemini-csv", default="data/manifests/gemini_tone_annotated_dev.csv")
-    parser.add_argument("--output", default="data/manifests/native_validation_token_sheet.csv")
-    parser.add_argument(
-        "--limit-utterances",
-        type=int,
-        default=None,
-        help="Optional number of utterances to include for a pilot review.",
+    parser = argparse.ArgumentParser(
+        description="Prepare native-speaker Twi/Akan tone validation sheet."
     )
+
+    parser.add_argument(
+        "--input",
+        default="data/manifests/gemini_tone_annotated_dev.csv",
+        help="Input Gemini annotation CSV.",
+    )
+
+    parser.add_argument(
+        "--output",
+        default="data/manifests/native_tone_validation_sheet.csv",
+        help="Output native-speaker validation CSV.",
+    )
+
+    parser.add_argument(
+        "--text-column",
+        default="text",
+        help="Column containing original Twi/Akan text.",
+    )
+
     args = parser.parse_args()
 
-    prepare_native_validation_pack(
-        dev_csv=Path(args.dev_csv),
-        gemini_csv=Path(args.gemini_csv),
+    build_native_validation_sheet(
+        input_csv=Path(args.input),
         output_csv=Path(args.output),
-        limit_utterances=args.limit_utterances,
+        text_column=args.text_column,
     )
 
 
