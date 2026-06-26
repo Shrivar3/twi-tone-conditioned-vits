@@ -8,13 +8,12 @@ import torch
 from scipy.io.wavfile import write
 from transformers import AutoTokenizer, set_seed
 
-from src.modeling.tone_conditioned_vits import ToneConditionedVitsModel
+from src.modelling.tone_conditioned_vits import ToneConditionedVitsModel
 from src.tone.token_tone_alignment import (
     build_token_tone_encoding,
     build_tone_conditioned_inputs,
 )
 from src.utils.paths import ensure_parent
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
