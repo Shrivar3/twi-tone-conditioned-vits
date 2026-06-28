@@ -50,3 +50,9 @@ week2_repo_updates*.zip
 
 # Script backup files
 *.bak.*
+
+# Accidental nested repo copies
+/twi-tone-conditioned-vits/
+
+# Local run logs
+/logs/
