@@ -1,0 +1,11 @@
+model_id,path
+FarmerlineML/main_twi_TTS,.gitattributes
+FarmerlineML/main_twi_TTS,README.md
+FarmerlineML/main_twi_TTS,added_tokens.json
+FarmerlineML/main_twi_TTS,config.json
+FarmerlineML/main_twi_TTS,handler.py
+FarmerlineML/main_twi_TTS,model.safetensors
+FarmerlineML/main_twi_TTS,preprocessor_config.json
+FarmerlineML/main_twi_TTS,special_tokens_map.json
+FarmerlineML/main_twi_TTS,tokenizer_config.json
+FarmerlineML/main_twi_TTS,vocab.json
