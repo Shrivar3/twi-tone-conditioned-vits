@@ -1,0 +1,13 @@
+{
+  "manifest_path": "data/manifests/dev_set_tone_conditioning.csv",
+  "n_rows": 50,
+  "input_ids_column": null,
+  "attention_mask_column": null,
+  "tone_ids_column": null,
+  "text_column": "text",
+  "tone_sequence_column": "gemini_tone_sequence",
+  "audio_column": null,
+  "sample_id_column": null,
+  "target_sampling_rate": 16000,
+  "allow_missing_audio": true
+}

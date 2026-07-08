@@ -1,0 +1,6 @@
+{
+  "max_steps": 100,
+  "final_proxy_loss": 8.202449830463365e-11,
+  "trainable_parameters": 36285168,
+  "warning": "This is a proxy waveform-MSE debug loop, not the full VITS training objective."
+}
