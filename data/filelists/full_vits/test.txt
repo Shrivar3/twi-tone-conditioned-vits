@@ -1,0 +1,2 @@
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0007.wav|ɛbɛma yɛade yɛn ho koraa koraa firi bɔne ne owuo a ɛde yɛn ayɛ nkoa no|L-L-H L-H-H L H L-H L-H H-L H-L L H-L L L-H L L-H L-H L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0040.wav|de ma yɛn no yɛbɛyɛ dɛn anya so mfaso kɛse yɛbɛnya saa nsɛmmisa yi ho mmuaeɛ|

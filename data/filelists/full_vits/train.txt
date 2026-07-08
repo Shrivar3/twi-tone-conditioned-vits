@@ -1,0 +1,46 @@
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0025.wav|onipa baakofoɔ no setie bɛma nnipa bebree ayɛ teneneefoɔ enti ɛtɔ da a asafonomfoɔ bi bɛtumi|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0023.wav|sen saa no ayamyɛ a ɛte saa no yɛ onyankopɔn honhom kronkron aba no fa a|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0019.wav|ɔba a ɔyerae no sankɔɔ fie no nagya no de anigye gyee no bio enti sɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0011.wav|nnyɛ mframo a ɛnkyɛ koraa na ɛdum aware nso sɛ obuo nnim a ɛnkyɛ na ɔdɔ|L-H L-L-H L L-H L-H L L-H L-H L-H L L-H L-H L L-H L L-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0004.wav|abɛbɔ me mpaeɛ na matie mo yeremia aduonu nkron nkyekyɛm du baako ne du mmienu mommɛn|L-L-H L L-H-L L L-H H L-H-L-H L-L-H-L L-H L-L-H H H-H L H L-H-H L-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0045.wav|a ɔwɔ ma asaase no abɛmu na ama ne din ho ate obiara ntumi nsesa yehowa|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0026.wav|enti afe biara sɛ ɛdu da a owui no a yɛne nnipa ɔpepem pii wɔ wiase|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0009.wav|wɔahu ɔdɔ kɛseɛ a yehowa wɔ ne n'adom nti na ɔsoma ne ba no baa asaase|L-H L-H H-L L H-L-L H L L-L-H L-H H L-H-H L H L H-H L-H-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0029.wav|won no wosan fre won onyankopon israel galatifo nkyekyem nsia nkyekyem dunsia nipa edu no gyina|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0016.wav|yi ho wɔyɛ nyane ma nkurɔfoɔ a wɔnnim bible mu paa anaa wɔnnim koraa ebia wɔnnim|H L L-H H-L L L-H-L L L-L-H H-L L H L-H L-L-H L-H L-H L-L-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0031.wav|ɔde tupa no kɔhyɛɛ ahenni asa so hɔ no ɔkyee no na wɔde no kɔtoo afiase|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0021.wav|asɛm na wɔde kyerɛw nsɛm kyerɛɛ ne nti a na saa nneɛma kɛse no sisii ɔhyɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0012.wav|yen ani gu so yɛta hu yenuanom kristofo na ɔkyenmu no ebia yɛbɛhu wɔn mpen pii|L L-H H H L-H H L-L-H-H H-L-L L H-L-H-H L L-H L-L-H L L-H H-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0003.wav|wo bɔne nkyekyɛmu dubaako asɛmmisa a ɛdi kan ɛnnɛ dɛn na ɛkanyan bible asuafo mu wɔ|H H-L L-L-H-L L-L-H L-L-H-L L L-H H L-H H L L-H-L H-L L-L-H-L L L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0039.wav|nkyerɛ yɛn kwan a yɛne ne ntɛmu ntumi nyɛ papa ɛno na ɛma yɛtumi kɔso som|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0038.wav|no ɛboa yɛn mpaebɔ pa ara sɛ yɛnwereho anaa yɛyɛ ankonam a ɛhyɛ yɛn den na|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0010.wav|mo agyanom nyankopɔn asoma me mo nkyɛn na wɔbisa me sɛ ne din de dɛn a|L L-L-H-L L-H-L-L L-L-H L L L-H L L-L-H L L L H H H L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0024.wav|de wɔn gu afiase sɛ nkurɔfo yɛ saa a ɛnyɛ anwanwa efisɛ yesu ka too hɔ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0035.wav|yɛ mu bebree wɔ hɔ a ensafua yɛwɔ mu no ɛsno sɛ obiara te ne sɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0000.wav|nkron nkyekyɛmu dummienu bible no ma yɛhunu sɛ ɛtɔ da a ɛbɛhia sɛ yɛkɔhunu dɔkota wɔn|L-H L-L-L-H L-L-H L-L L H L-H-L L L-H H L L-L-H L L-H-H-L H-L-L L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0043.wav|mmiɛnsa nso kenkan sɛ o yehowa minim sɛ odasani kwan nni ne nsam ɛnni onipa nsam|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0018.wav|ne onuawa apostolides suku ho no mu hwɛ kwan sɛ wobɛhyia ɔhaw wɔ asetenamu nea abraham|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0033.wav|dunwɔtwe nkyekyɛmu nnan akyiri yi bible suafuo no de nsinia kɔka kyerɛɛ krataa a asase mmienu|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0048.wav|nkyekyem du kɔsi du baako asɛm bisa dɛn na bible bɔɔ kɔkɔ sɛ ɛbɛkɔ so wɔ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0041.wav|yɛreka saa onipa biara nni hɔ a wahunu onyankopɔn da anaasɛ wahunu sɛ ɔrebɔ biribi na|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0030.wav|anigyentrasoɔ akɔwensafofieku ne abosonsom a ɛyɛ abofon mu petro nwoma a ɛdi kan ti nan nkyekyɛmu|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0028.wav|ho nanso ne boɔ yɛ den enti obisa ne ho sɛ sɛ mede sika kɛse a|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0020.wav|sɛ wɔbɛtumi akɔhyɛ mmara ahyɛde de ɔhaw aba na wɔama yudafo no agyae asɔrefie no sie|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0022.wav|nkron ne aduasa baako onyankopɔn bɛtumi ama yɛn tumi a ɛboro nnipa deɛ so na yɛde|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0042.wav|biara nnya adwene sɛ ne ho hia sen ne yɔnko a ɛbɛma wɔn ani agye paa|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0046.wav|papa sɛ yɛbɛnya adwene sɛ sɛ meyɛ biribi a ɛnyɛ na ɛyɛ bɔne wɔ onyankopɔn ani|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0036.wav|a ɛbi a yɛadwene bɛyɛ yɛn sɛ yehowa ntie yɛn mpaebɔ mmarima ne mmaa nokwafoɔ a|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0032.wav|yi nekrakra no yɛbɛhwɛ sɛnea saa nsɛm yi fa yɛn ho yɛhunu wɔn a wɔyɛ onyankopɔn|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0044.wav|ɛwom ɛnna fɛm sɛ wobɛfa saa gyinae no ababaa bi a wɔfrɛ no heather kãa sɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0013.wav|na ɛma asɛm too wɔn sɛ yɛhwɛ nea ɛtoo wɔn no a yɛtumi sua biribi firi|L L-H L-H H L L L-H L-H L-H L L L L-H-L H L-H-L H-L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0049.wav|mihu sɛ ɛreboa me wɔ m'asetena mu ɔhaw a mehyia no seesei no bible bɛyɛ dɛn|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0047.wav|adane amamfo amamfo no bɛn baghdad a ɛwɔ iraq ɛno yɛ adanse a ɛkyerɛ sɛ nkɔmhyɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0002.wav|nson asɛmmisa nea yɛsua wɔ asafo nhyiam ase ne nea yɛkenkan wɔ bible mu no ɛbɛyɛ|L-L L-L-H-L L-H L-H L L-H L-L L L L-H L-H-L L H-L L L L-L-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0027.wav|hɔ a ɔmfa no ho mmono emu baako pa ara ne owuo a na ɔbɛwu yayaaya|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0037.wav|ɛwom sɛ na me wɔ abusua de nanso afe apem ahankron aduɔson nwɔtwe mmiɛnsa mu no|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0005.wav|ayɛ yɛn nwanwa sɛ hokwan a na moses wɔ sɛ ɔbɛkɔ bɔhyɛ asase no so bɔɔ|H-L L L-L-L L H-L L L L-L H L H-L-H H-L L-L-L L H H-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0034.wav|asɛmmisa mfatoho bɛn na yesu de kyerɛɛ sɛ ɛnyɛ dako pɛ na obi bɛtumi de ayɛ|
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0006.wav|atena de akyerɛ sɛ yɛdɔ yehowa malachi ti mmienu nkyekyɛmu dummiɛnsa kɔsi dunsia kankan sɛ adeɛ|L-L-L L L-H-L L L-H L-H-L L-L-H H L-L-H L-L-L L-L-L-H H-L L-L-H H-H L L-H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0008.wav|a ɛbɛma wani agye paa no bi wɔn a wɔyɛ asuafo yɛ adwuma no esi wɔn|L L-L-H L-H-L L-H H L H L L L-H L-H-L H L-H-L L L-H L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0014.wav|me kã nneduafoɔ mmarima bɛboro ahanu bi ho na awɛmfoɔ a wɔwɔ hɔ no ɛmfaho yɛn|L H L-L-H-L L-L-H L-H-L L-H-H L H L L-H-L L L-L H L L-H-H L
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0015.wav|nson nkyekyɛm aduonu nnan asɛm no esi|L-L L-L-L L-L-H L-H L-H L L-H

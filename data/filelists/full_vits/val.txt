@@ -1,0 +1,2 @@
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0017.wav|na monhyɛ mma asanso wobɛtumi akɔboa ma mo asiesie hɔ sɛ wo tebea ma wo kwan|L L-H L-L L-H-H L-L-H-L L-H-H-L L L L-H-H H L L H-H-L H L H
+/workspace/twi-tone-conditioned-vits/outputs/baseline_tts/dev_0001.wav|afe a ɛdi hɔ no mesan kɔɔ baabi a yɛyɛ nhyiamu no wɔ minnesota kɔtwerɛ nsɔhwɛ|L-H L L-H H L L-H H H-L L L-H L-H-L L L UNK H-L-H L-H-L
