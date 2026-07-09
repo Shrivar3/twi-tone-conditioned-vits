@@ -1,0 +1,10 @@
+Full VITS sanity checkpoint reference
+
+Hugging Face repo:
+https://huggingface.co/Shrivar/twi-full-vits-sanity-runs
+
+Contents:
+- tone_200: 200-step full tone-conditioned VITS sanity checkpoint
+- no_tone_200: 200-step no-tone ablation sanity checkpoint
+
+These are sanity/debug checkpoints, not production-quality trained models.
