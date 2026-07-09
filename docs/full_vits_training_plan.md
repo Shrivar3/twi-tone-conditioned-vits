@@ -98,6 +98,23 @@ python scripts/22_train_full_tone_vits.py \
 
 Do not commit generated WAV files, checkpoints, caches, or local datasets.
 
+## Full-tone synthesis
+
+Generate a quick two-sample manifest from a saved full-VITS checkpoint:
+
+```bash
+python scripts/23_synth_full_tone_vits.py \
+  --checkpoint checkpoints/full_vits_tone_debug/full_tone_vits_final.pt \
+  --manifest data/manifests/dev_set_tone_conditioning_gpu_check.csv \
+  --output-dir outputs/full_tone_vits_debug \
+  --output-manifest data/manifests/dev_set_with_full_tone_vits_audio.csv \
+  --max-samples 2
+```
+
+The output manifest keeps all source columns and adds
+`full_tone_vits_audio_path`. Use `--disable-tone-conditioning` with the same
+checkpoint for a no-tone ablation synthesis pass.
+
 ## Smoke tests
 
 The smoke tests cover:
@@ -117,9 +134,8 @@ python -m unittest tests.test_full_vits_smoke
 Use the existing baseline and tone-conditioned evaluation flow:
 
 1. Synthesize baseline audio with `scripts/02_run_baseline_tts.py`.
-2. Synthesize full-tone model outputs from validation/test text. A follow-up
-   inference wrapper can load the full checkpoint and write a manifest with
-   `full_tone_vits_audio_path`.
+2. Synthesize full-tone model outputs from validation/test text with
+   `scripts/23_synth_full_tone_vits.py`.
 3. Run ASR WER/CER on baseline and full-tone outputs with
    `scripts/03_run_asr_wer.py`.
 4. Build blind MOS sheets with `scripts/19_make_blind_mos_comparison_sheet.py`.
