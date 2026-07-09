@@ -1,0 +1,8 @@
+metric,value
+n_samples,50
+mean_wer,2.38327731092437
+median_wer,1.875
+std_wer,1.4699290046163065
+mean_cer,1.793310267565154
+median_cer,1.3312280701754386
+std_cer,1.3705102628448518
